@@ -1,0 +1,89 @@
+{
+  "landing": {
+    "title": "StoreAR",
+    "subtitle": "AI-Powered E-Commerce Platform for Arabic Merchants",
+    "login": "Login",
+    "getStarted": "Get Started"
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome Back",
+      "subtitle": "Sign in to your StoreAR account",
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "signIn": "Sign In",
+      "signingIn": "Signing in...",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up",
+      "orContinueWith": "Or continue with",
+      "continueWithGoogle": "Continue with Google"
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Get started with StoreAR for free",
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "John Doe",
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "passwordHint": "At least 8 characters",
+      "workspaceName": "Workspace Name",
+      "workspaceNamePlaceholder": "My Store",
+      "workspaceHint": "You can create multiple stores in a workspace",
+      "createAccount": "Create Account",
+      "creatingAccount": "Creating account...",
+      "haveAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "orContinueWith": "Or continue with",
+      "continueWithGoogle": "Continue with Google"
+    }
+  },
+  "dashboard": {
+    "sidebar": {
+      "workspace": "Workspace",
+      "dashboard": "Dashboard",
+      "stores": "Stores",
+      "settings": "Settings",
+      "logout": "Logout"
+    },
+    "home": {
+      "welcomeBack": "Welcome back, {name}!",
+      "welcomeDefault": "Welcome back!",
+      "subtitle": "Here's what's happening with your stores today.",
+      "totalStores": "Total Stores",
+      "totalProducts": "Total Products",
+      "totalOrders": "Total Orders",
+      "noStores": "No stores created yet",
+      "noProducts": "No products added yet",
+      "noOrders": "No orders received yet",
+      "getStarted": {
+        "title": "Get Started with StoreAR",
+        "subtitle": "Follow these steps to create your first AI-powered store",
+        "step1": {
+          "title": "Create Your First Store",
+          "description": "Use AI to generate a beautiful, conversion-optimized store in minutes"
+        },
+        "step2": {
+          "title": "Add Products with AI",
+          "description": "Let AI generate product descriptions, images, and landing pages"
+        },
+        "step3": {
+          "title": "Configure Marketing Pixels",
+          "description": "Track conversions with Facebook, TikTok, Google, and more"
+        },
+        "step4": {
+          "title": "Start Selling",
+          "description": "Share your store link and start receiving orders"
+        },
+        "currentPlan": "Current Plan: {planName}",
+        "planLimits": "You can create up to {maxStores} stores with {maxProducts} products each"
+      }
+    }
+  },
+  "common": {
+    "loading": "Loading..."
+  }
+}

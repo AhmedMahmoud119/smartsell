@@ -1,0 +1,89 @@
+{
+  "landing": {
+    "title": "StoreAR",
+    "subtitle": "منصة التجارة الإلكترونية المدعومة بالذكاء الاصطناعي للتجار العرب",
+    "login": "تسجيل الدخول",
+    "getStarted": "ابدأ الآن"
+  },
+  "auth": {
+    "login": {
+      "title": "مرحباً بعودتك",
+      "subtitle": "سجل دخولك إلى حساب StoreAR الخاص بك",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "you@example.com",
+      "password": "كلمة المرور",
+      "passwordPlaceholder": "••••••••",
+      "signIn": "تسجيل الدخول",
+      "signingIn": "جارٍ تسجيل الدخول...",
+      "noAccount": "ليس لديك حساب؟",
+      "signUp": "سجل الآن",
+      "orContinueWith": "أو تابع باستخدام",
+      "continueWithGoogle": "تابع باستخدام Google"
+    },
+    "register": {
+      "title": "إنشاء حساب",
+      "subtitle": "ابدأ مع StoreAR مجاناً",
+      "fullName": "الاسم الكامل",
+      "fullNamePlaceholder": "أحمد محمد",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "you@example.com",
+      "password": "كلمة المرور",
+      "passwordPlaceholder": "••••••••",
+      "passwordHint": "8 أحرف على الأقل",
+      "workspaceName": "اسم مساحة العمل",
+      "workspaceNamePlaceholder": "متجري",
+      "workspaceHint": "يمكنك إنشاء متاجر متعددة في مساحة عمل واحدة",
+      "createAccount": "إنشاء حساب",
+      "creatingAccount": "جارٍ إنشاء الحساب...",
+      "haveAccount": "لديك حساب بالفعل؟",
+      "signIn": "سجل الدخول",
+      "orContinueWith": "أو تابع باستخدام",
+      "continueWithGoogle": "تابع باستخدام Google"
+    }
+  },
+  "dashboard": {
+    "sidebar": {
+      "workspace": "مساحة العمل",
+      "dashboard": "لوحة التحكم",
+      "stores": "المتاجر",
+      "settings": "الإعدادات",
+      "logout": "تسجيل الخروج"
+    },
+    "home": {
+      "welcomeBack": "مرحباً بعودتك، {name}!",
+      "welcomeDefault": "مرحباً بعودتك!",
+      "subtitle": "إليك ما يحدث مع متاجرك اليوم.",
+      "totalStores": "إجمالي المتاجر",
+      "totalProducts": "إجمالي المنتجات",
+      "totalOrders": "إجمالي الطلبات",
+      "noStores": "لم يتم إنشاء متاجر بعد",
+      "noProducts": "لم تتم إضافة منتجات بعد",
+      "noOrders": "لم يتم استلام طلبات بعد",
+      "getStarted": {
+        "title": "ابدأ مع StoreAR",
+        "subtitle": "اتبع هذه الخطوات لإنشاء متجرك الأول المدعوم بالذكاء الاصطناعي",
+        "step1": {
+          "title": "أنشئ متجرك الأول",
+          "description": "استخدم الذكاء الاصطناعي لإنشاء متجر جميل ومُحسّن للتحويلات في دقائق"
+        },
+        "step2": {
+          "title": "أضف منتجات بالذكاء الاصطناعي",
+          "description": "دع الذكاء الاصطناعي يُنشئ أوصاف المنتجات والصور والصفحات المقصودة"
+        },
+        "step3": {
+          "title": "قم بتهيئة بكسلات التسويق",
+          "description": "تتبع التحويلات باستخدام Facebook و TikTok و Google والمزيد"
+        },
+        "step4": {
+          "title": "ابدأ البيع",
+          "description": "شارك رابط متجرك وابدأ في تلقي الطلبات"
+        },
+        "currentPlan": "الخطة الحالية: {planName}",
+        "planLimits": "يمكنك إنشاء ما يصل إلى {maxStores} متاجر مع {maxProducts} منتجات لكل متجر"
+      }
+    }
+  },
+  "common": {
+    "loading": "جارٍ التحميل..."
+  }
+}

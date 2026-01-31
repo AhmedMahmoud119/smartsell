@@ -1,0 +1,792 @@
+// StoreAR - Complete Database Schema
+// This schema supports all features across all sprints
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// =====================
+// USERS & AUTH
+// =====================
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String?   // null if OAuth
+  name          String
+  phone         String?
+  locale        String    @default("ar")
+
+  emailVerified Boolean   @default(false)
+  verifiedAt    DateTime?
+
+  provider      String?   // google, email
+  providerId    String?   // OAuth provider ID
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  lastLoginAt   DateTime?
+
+  // Relations
+  workspaces    WorkspaceMember[]
+  sessions      Session[]
+
+  @@index([email])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+}
+
+// =====================
+// WORKSPACES (TENANTS)
+// =====================
+
+model Workspace {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+
+  planId      String
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  plan        Plan     @relation(fields: [planId], references: [id])
+  members     WorkspaceMember[]
+  stores      Store[]
+  subscriptions Subscription[]
+  usage       UsageRecord[]
+
+  @@index([slug])
+}
+
+model WorkspaceMember {
+  id          String   @id @default(cuid())
+  workspaceId String
+  userId      String
+  role        Role     @default(MEMBER)
+
+  createdAt   DateTime @default(now())
+
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, userId])
+  @@index([userId])
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+// =====================
+// PLANS & SUBSCRIPTIONS
+// =====================
+
+model Plan {
+  id              String   @id @default(cuid())
+  name            String
+  slug            String   @unique
+
+  price           Int      // Monthly price in cents
+  currency        String   @default("USD")
+
+  // Limits
+  maxStores       Int      @default(1)
+  maxProductsPerStore Int  @default(10)
+  maxOrdersPerMonth   Int  @default(50)
+  maxAiGenerations    Int  @default(50)
+
+  // Features
+  customDomain    Boolean  @default(false)
+  multiCurrency   Boolean  @default(false)
+  whatsappIntegration Boolean @default(false)
+  analyticsAdvanced   Boolean @default(false)
+  conversionAPI   Boolean  @default(false)
+  removeBranding  Boolean  @default(false)
+  prioritySupport Boolean  @default(false)
+
+  active          Boolean  @default(true)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  workspaces      Workspace[]
+  subscriptions   Subscription[]
+}
+
+model Subscription {
+  id              String   @id @default(cuid())
+  workspaceId     String
+  planId          String
+
+  status          SubscriptionStatus @default(ACTIVE)
+
+  currentPeriodStart DateTime
+  currentPeriodEnd   DateTime
+  cancelAt        DateTime?
+  canceledAt      DateTime?
+
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  workspace       Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  plan            Plan      @relation(fields: [planId], references: [id])
+
+  @@index([workspaceId])
+  @@index([stripeSubscriptionId])
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
+  PAST_DUE
+  TRIALING
+}
+
+// =====================
+// STORES
+// =====================
+
+model Store {
+  id          String   @id @default(cuid())
+  workspaceId String
+
+  // Basic Info
+  name        String
+  slug        String   @unique
+  description String?
+  logo        String?
+  favicon     String?
+
+  // Domain
+  subdomain   String?  @unique
+  customDomain String? @unique
+  domainVerified Boolean @default(false)
+
+  // Status
+  status      StoreStatus @default(DRAFT)
+  publishedAt DateTime?
+
+  // Theme (JSON)
+  theme       Json
+
+  // Business Info
+  email       String?
+  phone       String?
+  whatsapp    String?
+  address     String?
+
+  // Currency Settings
+  currency    String   @default("SAR")
+  enabledCurrencies Json?  // ["SAR", "AED", "USD"]
+  autoConvert       Boolean @default(false)
+  exchangeRates     Json?
+  ratesUpdatedAt    DateTime?
+
+  // Settings
+  language    String   @default("ar")
+  timezone    String   @default("Asia/Riyadh")
+
+  // Policies
+  shippingPolicy  String?
+  returnPolicy    String?
+  privacyPolicy   String?
+  termsOfService  String?
+
+  // SEO
+  metaTitle       String?
+  metaDescription String?
+
+  // Analytics
+  totalViews      Int      @default(0)
+  totalOrders     Int      @default(0)
+  totalRevenue    Int      @default(0)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  products    Product[]
+  collections Collection[]
+  pages       StorePage[]
+  orders      Order[]
+  customers   Customer[]
+  pixels      StorePixels?
+
+  @@index([workspaceId])
+  @@index([slug])
+  @@index([status])
+}
+
+enum StoreStatus {
+  DRAFT
+  PUBLISHED
+  PAUSED
+  ARCHIVED
+}
+
+// =====================
+// MARKETING PIXELS
+// =====================
+
+model StorePixels {
+  id          String   @id @default(cuid())
+  storeId     String   @unique
+
+  // Facebook
+  facebookPixelId     String?
+  facebookAccessToken String?
+  facebookTestMode    Boolean @default(false)
+
+  // TikTok
+  tiktokPixelId       String?
+  tiktokAccessToken   String?
+  tiktokTestMode      Boolean @default(false)
+
+  // Google
+  googleTagManagerId  String?
+  googleAnalyticsId   String?
+  googleAdsId         String?
+
+  // Microsoft
+  clarityId           String?
+
+  // Snapchat
+  snapchatPixelId     String?
+
+  // Custom Scripts
+  customHeadScripts   String?
+  customBodyScripts   String?
+
+  enabled     Boolean  @default(true)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  store       Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@index([storeId])
+}
+
+// =====================
+// COLLECTIONS
+// =====================
+
+model Collection {
+  id          String   @id @default(cuid())
+  storeId     String
+
+  name        String
+  slug        String
+  description String?
+  image       String?
+
+  visible     Boolean  @default(true)
+  order       Int      @default(0)
+
+  metaTitle       String?
+  metaDescription String?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  store       Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  products    ProductCollection[]
+
+  @@unique([storeId, slug])
+  @@index([storeId])
+}
+
+// =====================
+// PRODUCTS
+// =====================
+
+model Product {
+  id          String   @id @default(cuid())
+  storeId     String
+
+  // Basic Info
+  name        String
+  slug        String
+  description String?
+  shortDescription String?
+
+  // Pricing (in primary currency, cents)
+  price       Int
+  compareAtPrice Int?
+  costPrice   Int?
+
+  // Multi-currency pricing
+  priceMultiCurrency Json?
+
+  // Inventory
+  sku         String?
+  barcode     String?
+  trackInventory Boolean @default(true)
+  stock       Int      @default(0)
+  lowStockThreshold Int @default(5)
+
+  // Status
+  status      ProductStatus @default(DRAFT)
+  publishedAt DateTime?
+
+  // Media
+  images      Json     // Array of URLs
+  video       String?
+
+  // Attributes
+  weight      Float?
+  dimensions  Json?
+
+  // Variants
+  hasVariants Boolean  @default(false)
+
+  // Landing Page
+  hasLandingPage Boolean  @default(true)
+  landingPageSlug String?
+  landingPageSchema Json?
+
+  // Marketing
+  utmCampaign String?
+  utmSource   String?
+  utmMedium   String?
+
+  // Conversion Tracking
+  conversionValue Int?
+
+  // SEO
+  metaTitle       String?
+  metaDescription String?
+
+  // Analytics
+  views       Int      @default(0)
+  sales       Int      @default(0)
+  landingPageViews Int  @default(0)
+  landingPageOrders Int @default(0)
+
+  // AI
+  aiGenerated Boolean  @default(false)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  store       Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  collections ProductCollection[]
+  variants    ProductVariant[]
+  orderItems  OrderItem[]
+
+  @@unique([storeId, slug])
+  @@index([storeId])
+  @@index([status])
+  @@index([storeId, landingPageSlug])
+}
+
+enum ProductStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+  OUT_OF_STOCK
+}
+
+model ProductVariant {
+  id          String   @id @default(cuid())
+  productId   String
+
+  name        String
+  sku         String?
+  price       Int?
+  stock       Int      @default(0)
+
+  options     Json
+
+  image       String?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+}
+
+model ProductCollection {
+  id           String     @id @default(cuid())
+  productId    String
+  collectionId String
+
+  product      Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, collectionId])
+  @@index([productId])
+  @@index([collectionId])
+}
+
+// =====================
+// STORE PAGES
+// =====================
+
+model StorePage {
+  id          String   @id @default(cuid())
+  storeId     String
+
+  title       String
+  slug        String
+  content     Json
+
+  type        PageType @default(CUSTOM)
+
+  visible     Boolean  @default(true)
+  order       Int      @default(0)
+
+  metaTitle       String?
+  metaDescription String?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  store       Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@unique([storeId, slug])
+  @@index([storeId])
+}
+
+enum PageType {
+  HOME
+  ABOUT
+  CONTACT
+  CUSTOM
+}
+
+// =====================
+// CUSTOMERS
+// =====================
+
+model Customer {
+  id          String   @id @default(cuid())
+  storeId     String
+
+  name        String
+  email       String?
+  phone       String
+
+  address     String?
+  city        String?
+  state       String?
+  zipCode     String?
+  country     String   @default("SA")
+
+  totalOrders Int      @default(0)
+  totalSpent  Int      @default(0)
+
+  acceptsMarketing Boolean @default(false)
+
+  notes       String?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  store       Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  orders      Order[]
+
+  @@unique([storeId, phone])
+  @@index([storeId])
+  @@index([phone])
+}
+
+// =====================
+// ORDERS
+// =====================
+
+model Order {
+  id          String   @id @default(cuid())
+  storeId     String
+  customerId  String?
+  workspaceId String
+
+  orderNumber String   @unique
+
+  // Customer snapshot
+  customerName    String
+  customerEmail   String?
+  customerPhone   String
+  customerAddress String
+  customerCity    String
+  customerState   String?
+  customerZipCode String?
+  customerCountry String @default("SA")
+
+  // Pricing
+  subtotal    Int
+  shipping    Int      @default(0)
+  tax         Int      @default(0)
+  discount    Int      @default(0)
+  total       Int
+
+  // Currency
+  currency    String   @default("SAR")
+  exchangeRate Float?
+  totalInPrimaryCurrency Int?
+
+  // Payment
+  paymentMethod   PaymentMethod @default(COD)
+  paymentStatus   PaymentStatus @default(PENDING)
+  paidAt          DateTime?
+
+  // Fulfillment
+  fulfillmentStatus FulfillmentStatus @default(UNFULFILLED)
+  trackingNumber    String?
+  carrier           String?
+  shippedAt         DateTime?
+  deliveredAt       DateTime?
+
+  // Status
+  status      OrderStatus @default(PENDING)
+  canceledAt  DateTime?
+  cancelReason String?
+
+  notes       String?
+
+  // Tracking
+  source      String?
+  ipAddress   String?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  store       Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  customer    Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  items       OrderItem[]
+
+  @@index([storeId])
+  @@index([workspaceId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([orderNumber])
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  COD
+  CARD
+  BANK_TRANSFER
+  APPLE_PAY
+  MADA
+  STC_PAY
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum FulfillmentStatus {
+  UNFULFILLED
+  PARTIAL
+  FULFILLED
+  RETURNED
+}
+
+model OrderItem {
+  id          String   @id @default(cuid())
+  orderId     String
+  productId   String?
+
+  productName     String
+  productImage    String?
+  variantName     String?
+  sku             String?
+
+  quantity    Int
+  price       Int
+  total       Int
+
+  createdAt   DateTime @default(now())
+
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product     Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  @@index([orderId])
+}
+
+// =====================
+// TRACKING EVENTS
+// =====================
+
+model TrackingEvent {
+  id          String   @id @default(cuid())
+  storeId     String
+  productId   String?
+  orderId     String?
+
+  eventType   PixelEvent
+  pixelType   PixelType
+
+  eventData   Json
+
+  fbp         String?
+  fbc         String?
+  userAgent   String?
+  ipAddress   String?
+
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmContent  String?
+  utmTerm     String?
+
+  sentToServer Boolean @default(false)
+  serverResponse Json?
+
+  createdAt   DateTime @default(now())
+
+  @@index([storeId, eventType])
+  @@index([productId])
+  @@index([orderId])
+  @@index([createdAt])
+}
+
+enum PixelEvent {
+  PAGE_VIEW
+  VIEW_CONTENT
+  ADD_TO_CART
+  INITIATE_CHECKOUT
+  PURCHASE
+  LEAD
+  COMPLETE_REGISTRATION
+}
+
+enum PixelType {
+  FACEBOOK
+  TIKTOK
+  GOOGLE
+  SNAPCHAT
+  TWITTER
+}
+
+// =====================
+// AI GENERATIONS
+// =====================
+
+model AiGeneration {
+  id          String   @id @default(cuid())
+  workspaceId String
+  storeId     String?
+  productId   String?
+
+  inputs      Json
+  outputs     Json
+
+  engine      AiEngine
+  model       String
+  tokensUsed  Int
+
+  status      GenerationStatus @default(PENDING)
+  error       String?
+
+  createdAt   DateTime @default(now())
+  completedAt DateTime?
+
+  @@index([workspaceId])
+  @@index([storeId])
+  @@index([createdAt])
+}
+
+enum AiEngine {
+  STORE_SETUP
+  PRODUCT_DESCRIPTION
+  PRODUCT_LANDING_PAGE
+  COLLECTION_DESCRIPTION
+}
+
+enum GenerationStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+// =====================
+// CURRENCY
+// =====================
+
+model ExchangeRate {
+  id          String   @id @default(cuid())
+
+  fromCurrency String
+  toCurrency   String
+  rate         Float
+
+  source      String   @default("openexchangerates")
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([fromCurrency, toCurrency])
+  @@index([fromCurrency])
+  @@index([updatedAt])
+}
+
+// =====================
+// USAGE TRACKING
+// =====================
+
+model UsageRecord {
+  id          String   @id @default(cuid())
+  workspaceId String
+
+  metric      UsageMetric
+  value       Int      @default(1)
+
+  year        Int
+  month       Int
+  day         Int
+
+  createdAt   DateTime @default(now())
+
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, metric, year, month, day])
+  @@index([workspaceId, year, month])
+}
+
+enum UsageMetric {
+  AI_GENERATION
+  ORDER_CREATED
+  PRODUCT_VIEW
+  STORE_VIEW
+}

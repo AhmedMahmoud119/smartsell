@@ -1,0 +1,6 @@
+npx prisma migrate deploy
+npx ts-node prisma/seed.ts
+
+
+Start backend: cd backend && npm run start:dev
+Start frontend: cd frontend && npm run dev
