@@ -15,6 +15,7 @@ const auth_module_1 = require("./modules/auth/auth.module");
 const user_module_1 = require("./modules/user/user.module");
 const store_module_1 = require("./modules/store/store.module");
 const product_module_1 = require("./modules/product/product.module");
+const order_module_1 = require("./modules/order/order.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -33,6 +34,7 @@ exports.AppModule = AppModule = __decorate([
             user_module_1.UserModule,
             store_module_1.StoreModule,
             product_module_1.ProductModule,
+            order_module_1.OrderModule,
         ],
     })
 ], AppModule);

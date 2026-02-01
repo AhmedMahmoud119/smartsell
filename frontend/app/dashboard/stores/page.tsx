@@ -174,14 +174,24 @@ export default function StoresPage() {
               </div>
 
               <div className="flex flex-col gap-2">
-                <button
-                  onClick={() =>
-                    router.push(`/dashboard/stores/${store.id}/products`)
-                  }
-                  className="w-full px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition text-sm"
-                >
-                  {t('stores.products')}
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() =>
+                      router.push(`/dashboard/stores/${store.id}/products`)
+                    }
+                    className="flex-1 px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition text-sm"
+                  >
+                    {t('stores.products')}
+                  </button>
+                  <button
+                    onClick={() =>
+                      router.push(`/dashboard/stores/${store.id}/orders`)
+                    }
+                    className="flex-1 px-3 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition text-sm"
+                  >
+                    {t('stores.orders')}
+                  </button>
+                </div>
                 <div className="flex gap-2">
                   <button
                     onClick={() =>

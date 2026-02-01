@@ -193,3 +193,110 @@ export interface UpdateProductDto {
   metaTitle?: string;
   metaDescription?: string;
 }
+
+export interface OrderItem {
+  id: string;
+  orderId: string;
+  productId: string | null;
+  productName: string;
+  productImage: string | null;
+  variantName: string | null;
+  sku: string | null;
+  quantity: number;
+  price: number;
+  total: number;
+  product?: {
+    id: string;
+    name: string;
+    slug: string;
+    images: string[];
+  };
+}
+
+export interface Order {
+  id: string;
+  storeId: string;
+  customerId: string | null;
+  workspaceId: string;
+  orderNumber: string;
+  customerName: string;
+  customerEmail: string | null;
+  customerPhone: string;
+  customerAddress: string;
+  customerCity: string;
+  customerState: string | null;
+  customerZipCode: string | null;
+  customerCountry: string;
+  subtotal: number;
+  shipping: number;
+  tax: number;
+  discount: number;
+  total: number;
+  currency: string;
+  exchangeRate: number | null;
+  totalInPrimaryCurrency: number | null;
+  paymentMethod: 'COD' | 'CARD' | 'BANK_TRANSFER' | 'WALLET';
+  paymentStatus: 'PENDING' | 'PAID' | 'FAILED' | 'REFUNDED';
+  paidAt: string | null;
+  fulfillmentStatus: 'UNFULFILLED' | 'PARTIAL' | 'FULFILLED' | 'RETURNED';
+  trackingNumber: string | null;
+  carrier: string | null;
+  deliveredAt: string | null;
+  status: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'CANCELED';
+  canceledAt: string | null;
+  cancelReason: string | null;
+  notes: string | null;
+  source: string | null;
+  createdAt: string;
+  updatedAt: string;
+  items: OrderItem[];
+  store?: {
+    id: string;
+    name: string;
+    slug: string;
+  };
+}
+
+export interface OrderItemInput {
+  productId: string;
+  quantity: number;
+  price: number;
+}
+
+export interface CreateOrderDto {
+  storeId: string;
+  customerName: string;
+  customerEmail?: string;
+  customerPhone: string;
+  customerAddress: string;
+  customerCity: string;
+  customerState?: string;
+  customerZipCode?: string;
+  customerCountry?: string;
+  items: OrderItemInput[];
+  shipping?: number;
+  tax?: number;
+  discount?: number;
+  paymentMethod?: 'COD' | 'CARD' | 'BANK_TRANSFER' | 'WALLET';
+  notes?: string;
+  source?: string;
+}
+
+export interface UpdateOrderDto {
+  status?: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'CANCELED';
+  paymentStatus?: 'PENDING' | 'PAID' | 'FAILED' | 'REFUNDED';
+  fulfillmentStatus?: 'UNFULFILLED' | 'PARTIAL' | 'FULFILLED' | 'RETURNED';
+  trackingNumber?: string;
+  carrier?: string;
+  deliveredAt?: string;
+  paidAt?: string;
+  cancelReason?: string;
+  notes?: string;
+}
+
+export interface OrderStats {
+  totalOrders: number;
+  totalRevenue: number;
+  pendingOrders: number;
+  completedOrders: number;
+}

@@ -12,8 +12,8 @@ export default function EditProductPage() {
   const params = useParams();
   const router = useRouter();
   const queryClient = useQueryClient();
-  const storeId = params.storeId as string;
-  const productId = params.id as string;
+  const storeId = params.id as string;
+  const productId = params.productId as string;
 
   const [formData, setFormData] = useState({
     name: '',
