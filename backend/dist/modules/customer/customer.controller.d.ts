@@ -4,7 +4,7 @@ import { UpdateCustomerDto } from './dto/update-customer.dto';
 export declare class CustomerController {
     private readonly customerService;
     constructor(customerService: CustomerService);
-    create(workspaceId: string, createCustomerDto: CreateCustomerDto): Promise<{
+    create(req: any, createCustomerDto: CreateCustomerDto): Promise<{
         store: {
             id: string;
             name: string;
@@ -27,7 +27,7 @@ export declare class CustomerController {
         updatedAt: Date;
         storeId: string;
     }>;
-    findAll(workspaceId: string, storeId?: string): Promise<({
+    findAll(req: any, storeId?: string): Promise<({
         store: {
             id: string;
             name: string;
@@ -53,7 +53,7 @@ export declare class CustomerController {
         updatedAt: Date;
         storeId: string;
     })[]>;
-    findByPhone(workspaceId: string, storeId: string, phone: string): Promise<{
+    findByPhone(req: any, storeId: string, phone: string): Promise<{
         id: string;
         name: string;
         email: string | null;
@@ -71,7 +71,7 @@ export declare class CustomerController {
         updatedAt: Date;
         storeId: string;
     }>;
-    findOne(workspaceId: string, id: string): Promise<{
+    findOne(req: any, id: string): Promise<{
         store: {
             id: string;
             name: string;
@@ -101,7 +101,7 @@ export declare class CustomerController {
         updatedAt: Date;
         storeId: string;
     }>;
-    update(workspaceId: string, id: string, updateCustomerDto: UpdateCustomerDto): Promise<{
+    update(req: any, id: string, updateCustomerDto: UpdateCustomerDto): Promise<{
         store: {
             id: string;
             name: string;
@@ -124,7 +124,7 @@ export declare class CustomerController {
         updatedAt: Date;
         storeId: string;
     }>;
-    remove(workspaceId: string, id: string): Promise<{
+    remove(req: any, id: string): Promise<{
         id: string;
         name: string;
         email: string | null;
