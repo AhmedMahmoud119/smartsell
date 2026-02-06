@@ -5,6 +5,138 @@ export const translations = {
       subtitle: 'منصة التجارة الإلكترونية المدعومة بالذكاء الاصطناعي للتجار العرب',
       login: 'تسجيل الدخول',
       getStarted: 'ابدأ الآن',
+      hero: {
+        badge: 'منصة تجارة إلكترونية مدعومة بالذكاء الاصطناعي',
+        title: 'أنشئ متجرك الإلكتروني',
+        titleHighlight: 'في دقائق',
+        subtitle: 'ابدأ البيع عبر الإنترنت بسهولة مع SmartSell - منصة شاملة لإدارة متجرك الإلكتروني',
+        cta: 'ابدأ مجاناً',
+        watchDemo: 'شاهد العرض التوضيحي',
+        stats: {
+          stores: 'متجر نشط',
+          products: 'منتج مباع',
+          uptime: 'وقت تشغيل',
+        },
+      },
+      features: {
+        title: 'كل ما تحتاجه للنجاح',
+        subtitle: 'ميزات قوية مصممة للتجارة الإلكترونية الحديثة',
+        speed: {
+          title: 'إعداد سريع كالبرق',
+          description: 'أطلق متجرك الإلكتروني في دقائق وليس أيام',
+        },
+        secure: {
+          title: 'آمن وموثوق',
+          description: 'أمان على مستوى المؤسسات لحماية عملك وعملائك',
+        },
+        payments: {
+          title: 'طرق دفع متعددة',
+          description: 'اقبل المدفوعات عبر الدفع عند الاستلام، البطاقات، والمحافظ الرقمية',
+        },
+        analytics: {
+          title: 'تحليلات متقدمة',
+          description: 'تتبع المبيعات والعملاء والأداء برؤى تفصيلية',
+        },
+        mobile: {
+          title: 'متوافق مع الجوال',
+          description: 'متاجر جميلة تعمل بشكل مثالي على جميع الأجهزة',
+        },
+        bilingual: {
+          title: 'دعم العربية والإنجليزية',
+          description: 'دعم كامل للغة العربية وواجهة ثنائية اللغة',
+        },
+      },
+      howItWorks: {
+        title: 'كيف يعمل',
+        subtitle: 'ابدأ البيع في 4 خطوات بسيطة',
+        step1: {
+          title: 'أنشئ حساب',
+          description: 'سجل في ثوانٍ باستخدام بريدك الإلكتروني',
+        },
+        step2: {
+          title: 'أعد متجرك',
+          description: 'خصص متجرك باستخدام منشئنا السهل',
+        },
+        step3: {
+          title: 'أضف المنتجات',
+          description: 'ارفع المنتجات وابدأ البيع',
+        },
+        step4: {
+          title: 'ابدأ البيع',
+          description: 'شارك متجرك وشاهد الطلبات تتدفق',
+        },
+      },
+      pricing: {
+        title: 'خطط تسعير بسيطة',
+        subtitle: 'اختر الخطة المناسبة لعملك',
+        free: {
+          name: 'مجاني',
+          price: '0',
+          description: 'مثالي للبدء',
+          features: ['1 متجر', '50 منتج', '100 طلب شهرياً', 'دعم المجتمع'],
+          cta: 'ابدأ مجاناً',
+        },
+        pro: {
+          name: 'احترافي',
+          price: '99',
+          description: 'للأعمال المتنامية',
+          features: ['متاجر غير محدودة', 'منتجات غير محدودة', 'طلبات غير محدودة', 'دعم أولوية', 'تحليلات متقدمة', 'نطاق مخصص'],
+          cta: 'ابدأ تجربة مجانية',
+          popular: 'الأكثر شعبية',
+        },
+      },
+      testimonials: {
+        title: 'ماذا يقول عملاؤنا',
+        subtitle: 'انضم إلى آلاف التجار الذين يثقون بـ SmartSell',
+        testimonial1: {
+          name: 'أحمد محمد',
+          role: 'مالك متجر إلكتروني',
+          content: 'SmartSell غيرت طريقة إدارتي لمتجري بالكامل. سهلة الاستخدام وقوية جداً!',
+        },
+        testimonial2: {
+          name: 'سارة جونسون',
+          role: 'مديرة تجارة إلكترونية',
+          content: 'أفضل منصة استخدمتها لإدارة متجري الإلكتروني. أوصي بها بشدة!',
+        },
+        testimonial3: {
+          name: 'محمد العلي',
+          role: 'تاجر تجزئة',
+          content: 'الدعم الفني ممتاز والمنصة سهلة جداً. بدأت البيع في أول يوم!',
+        },
+      },
+      faq: {
+        title: 'الأسئلة الشائعة',
+        subtitle: 'إجابات على الأسئلة الأكثر شيوعاً',
+        q1: {
+          question: 'هل SmartSell مجاني؟',
+          answer: 'نعم، نقدم خطة مجانية تماماً تتيح لك إنشاء متجر واحد مع 50 منتج و100 طلب شهرياً.',
+        },
+        q2: {
+          question: 'ما هي طرق الدفع المدعومة؟',
+          answer: 'ندعم الدفع عند الاستلام، البطاقات الائتمانية، التحويل البنكي، والمحافظ الرقمية.',
+        },
+        q3: {
+          question: 'هل يمكنني تخصيص تصميم متجري؟',
+          answer: 'بالتأكيد! لديك تحكم كامل في ألوان وتصميم متجرك مع واجهة سهلة الاستخدام.',
+        },
+        q4: {
+          question: 'هل يوجد دعم فني؟',
+          answer: 'نعم، نقدم دعم فني عبر البريد الإلكتروني والدردشة المباشرة. العملاء المحترفون يحصلون على دعم أولوية.',
+        },
+        q5: {
+          question: 'هل يمكنني استخدام نطاقي الخاص؟',
+          answer: 'نعم، في الخطة الاحترافية يمكنك ربط نطاقك الخاص بمتجرك.',
+        },
+      },
+      cta: {
+        title: 'هل أنت مستعد لبدء رحلتك؟',
+        subtitle: 'انضم إلى آلاف التجار الذين يبيعون بالفعل مع SmartSell',
+        button: 'ابدأ مجاناً →',
+      },
+      footer: {
+        tagline: 'منصة تجارة إلكترونية مدعومة بالذكاء الاصطناعي للتجار العرب',
+        rights: '© 2026 SmartSell. جميع الحقوق محفوظة.',
+      },
     },
     auth: {
       login: {
@@ -171,6 +303,31 @@ export const translations = {
       markAsDelivered: 'تحديد كمسلم',
       cancelOrder: 'إلغاء الطلب',
     },
+    customers: {
+      title: 'العملاء',
+      addCustomer: 'إضافة عميل',
+      noCustomersYet: 'لا يوجد عملاء حتى الآن',
+      createFirstCustomer: 'أضف عميلك الأول',
+      customerName: 'اسم العميل',
+      email: 'البريد الإلكتروني',
+      phone: 'رقم الهاتف',
+      address: 'العنوان',
+      city: 'المدينة',
+      state: 'المنطقة',
+      zipCode: 'الرمز البريدي',
+      country: 'الدولة',
+      totalOrders: 'إجمالي الطلبات',
+      totalSpent: 'إجمالي المبلغ المنفق',
+      acceptsMarketing: 'يقبل التسويق',
+      notes: 'ملاحظات',
+      creating: 'جارٍ الإنشاء...',
+      saving: 'جارٍ الحفظ...',
+      selectStore: 'اختر المتجر',
+      deleteConfirm: 'هل أنت متأكد من حذف هذا العميل؟',
+      customerDetails: 'تفاصيل العميل',
+      recentOrders: 'الطلبات الأخيرة',
+      orderHistory: 'سجل الطلبات',
+    },
     common: {
       loading: 'جارٍ التحميل...',
       save: 'حفظ',
@@ -192,6 +349,138 @@ export const translations = {
       subtitle: 'AI-Powered E-Commerce Platform for Arabic Merchants',
       login: 'Login',
       getStarted: 'Get Started',
+      hero: {
+        badge: 'AI-Powered E-Commerce Platform',
+        title: 'Build Your Dream Store',
+        titleHighlight: 'In Minutes',
+        subtitle: 'Start selling online easily with SmartSell - a complete platform for managing your e-commerce store',
+        cta: 'Start Free',
+        watchDemo: 'Watch Demo',
+        stats: {
+          stores: 'Active Stores',
+          products: 'Products Sold',
+          uptime: 'Uptime',
+        },
+      },
+      features: {
+        title: 'Everything You Need to Succeed',
+        subtitle: 'Powerful features built for modern e-commerce',
+        speed: {
+          title: 'Lightning Fast Setup',
+          description: 'Get your online store up and running in minutes, not days',
+        },
+        secure: {
+          title: 'Secure & Reliable',
+          description: 'Enterprise-grade security to protect your business and customers',
+        },
+        payments: {
+          title: 'Multiple Payment Methods',
+          description: 'Accept payments through COD, cards, and digital wallets',
+        },
+        analytics: {
+          title: 'Advanced Analytics',
+          description: 'Track sales, customers, and performance with detailed insights',
+        },
+        mobile: {
+          title: 'Mobile Responsive',
+          description: 'Beautiful stores that work perfectly on all devices',
+        },
+        bilingual: {
+          title: 'Arabic & English Support',
+          description: 'Full RTL support and bilingual interface out of the box',
+        },
+      },
+      howItWorks: {
+        title: 'How It Works',
+        subtitle: 'Start selling in 4 simple steps',
+        step1: {
+          title: 'Create Account',
+          description: 'Sign up in seconds with your email',
+        },
+        step2: {
+          title: 'Setup Store',
+          description: 'Customize your store with our easy builder',
+        },
+        step3: {
+          title: 'Add Products',
+          description: 'Upload products and start selling',
+        },
+        step4: {
+          title: 'Start Selling',
+          description: 'Share your store and watch orders come in',
+        },
+      },
+      pricing: {
+        title: 'Simple Pricing Plans',
+        subtitle: 'Choose the right plan for your business',
+        free: {
+          name: 'Free',
+          price: '0',
+          description: 'Perfect for getting started',
+          features: ['1 Store', '50 Products', '100 Orders/month', 'Community Support'],
+          cta: 'Start Free',
+        },
+        pro: {
+          name: 'Professional',
+          price: '99',
+          description: 'For growing businesses',
+          features: ['Unlimited Stores', 'Unlimited Products', 'Unlimited Orders', 'Priority Support', 'Advanced Analytics', 'Custom Domain'],
+          cta: 'Start Free Trial',
+          popular: 'Most Popular',
+        },
+      },
+      testimonials: {
+        title: 'What Our Customers Say',
+        subtitle: 'Join thousands of merchants who trust SmartSell',
+        testimonial1: {
+          name: 'Ahmed Mohamed',
+          role: 'E-Commerce Store Owner',
+          content: 'SmartSell completely transformed how I manage my store. Easy to use and incredibly powerful!',
+        },
+        testimonial2: {
+          name: 'Sarah Johnson',
+          role: 'E-Commerce Manager',
+          content: 'The best platform I\'ve used for managing my online store. Highly recommended!',
+        },
+        testimonial3: {
+          name: 'Mohamed Alali',
+          role: 'Retail Merchant',
+          content: 'Excellent technical support and the platform is very easy. I started selling on day one!',
+        },
+      },
+      faq: {
+        title: 'Frequently Asked Questions',
+        subtitle: 'Answers to the most common questions',
+        q1: {
+          question: 'Is SmartSell free?',
+          answer: 'Yes, we offer a completely free plan that allows you to create 1 store with 50 products and 100 orders per month.',
+        },
+        q2: {
+          question: 'What payment methods are supported?',
+          answer: 'We support Cash on Delivery (COD), credit cards, bank transfers, and digital wallets.',
+        },
+        q3: {
+          question: 'Can I customize my store design?',
+          answer: 'Absolutely! You have full control over your store colors and design with an easy-to-use interface.',
+        },
+        q4: {
+          question: 'Is there technical support?',
+          answer: 'Yes, we provide technical support via email and live chat. Professional customers get priority support.',
+        },
+        q5: {
+          question: 'Can I use my own domain?',
+          answer: 'Yes, on the Professional plan you can connect your own custom domain to your store.',
+        },
+      },
+      cta: {
+        title: 'Ready to Start Your Journey?',
+        subtitle: 'Join thousands of merchants already selling with SmartSell',
+        button: 'Get Started for Free →',
+      },
+      footer: {
+        tagline: 'AI-Powered E-Commerce Platform for Arabic Merchants',
+        rights: '© 2026 SmartSell. All rights reserved.',
+      },
     },
     auth: {
       login: {
@@ -357,6 +646,31 @@ export const translations = {
       markAsShipped: 'Mark as Shipped',
       markAsDelivered: 'Mark as Delivered',
       cancelOrder: 'Cancel Order',
+    },
+    customers: {
+      title: 'Customers',
+      addCustomer: 'Add Customer',
+      noCustomersYet: 'No customers yet',
+      createFirstCustomer: 'Add your first customer',
+      customerName: 'Customer Name',
+      email: 'Email',
+      phone: 'Phone',
+      address: 'Address',
+      city: 'City',
+      state: 'State',
+      zipCode: 'Zip Code',
+      country: 'Country',
+      totalOrders: 'Total Orders',
+      totalSpent: 'Total Spent',
+      acceptsMarketing: 'Accepts Marketing',
+      notes: 'Notes',
+      creating: 'Creating...',
+      saving: 'Saving...',
+      selectStore: 'Select Store',
+      deleteConfirm: 'Are you sure you want to delete this customer?',
+      customerDetails: 'Customer Details',
+      recentOrders: 'Recent Orders',
+      orderHistory: 'Order History',
     },
     common: {
       loading: 'Loading...',

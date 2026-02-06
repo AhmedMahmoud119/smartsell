@@ -7,7 +7,7 @@ import { translations, Locale } from './translations';
 interface I18nState {
   locale: Locale;
   setLocale: (locale: Locale) => void;
-  t: (key: string, params?: Record<string, string>) => string;
+  t: (key: string, params?: Record<string, string>) => any;
 }
 
 export const useTranslation = create<I18nState>()(
@@ -29,6 +29,11 @@ export const useTranslation = create<I18nState>()(
 
         for (const k of keys) {
           value = value?.[k];
+        }
+
+        // Return arrays or objects as-is
+        if (Array.isArray(value) || typeof value === 'object') {
+          return value;
         }
 
         if (typeof value !== 'string') {
