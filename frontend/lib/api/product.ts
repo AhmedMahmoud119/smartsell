@@ -38,4 +38,19 @@ export const productApi = {
     });
     return response.data;
   },
+
+  getUnassigned: async (): Promise<Product[]> => {
+    const response = await apiClient.get('/product/unassigned/list');
+    return response.data;
+  },
+
+  assignToStore: async (productId: string, storeId: string): Promise<Product> => {
+    const response = await apiClient.post(`/product/${productId}/assign-store`, { storeId });
+    return response.data;
+  },
+
+  unassignFromStore: async (productId: string): Promise<Product> => {
+    const response = await apiClient.delete(`/product/${productId}/unassign-store`);
+    return response.data;
+  },
 };

@@ -8,35 +8,32 @@ export declare class SettingsService {
     getAllCurrencies(userId: string, workspaceId: string): Promise<{
         symbol: string;
         id: string;
-        name: string;
-        createdAt: Date;
-        updatedAt: Date;
         workspaceId: string;
         code: string;
-        nameAr: string;
+        name: string;
         isActive: boolean;
+        createdAt: Date;
+        updatedAt: Date;
     }[]>;
     createCurrency(userId: string, workspaceId: string, dto: CreateCurrencyDto): Promise<{
         symbol: string;
         id: string;
-        name: string;
-        createdAt: Date;
-        updatedAt: Date;
         workspaceId: string;
         code: string;
-        nameAr: string;
+        name: string;
         isActive: boolean;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     updateCurrency(userId: string, workspaceId: string, currencyId: string, dto: UpdateCurrencyDto): Promise<{
         symbol: string;
         id: string;
-        name: string;
-        createdAt: Date;
-        updatedAt: Date;
         workspaceId: string;
         code: string;
-        nameAr: string;
+        name: string;
         isActive: boolean;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     deleteCurrency(userId: string, workspaceId: string, currencyId: string): Promise<{
         message: string;
@@ -50,13 +47,12 @@ export declare class SettingsService {
         availableCurrencies: {
             symbol: string;
             id: string;
-            name: string;
-            createdAt: Date;
-            updatedAt: Date;
             workspaceId: string;
             code: string;
-            nameAr: string;
+            name: string;
             isActive: boolean;
+            createdAt: Date;
+            updatedAt: Date;
         }[];
     }>;
     updateStoreCurrencies(userId: string, workspaceId: string, storeId: string, dto: UpdateCurrenciesDto): Promise<{
@@ -68,13 +64,12 @@ export declare class SettingsService {
         availableCurrencies: {
             symbol: string;
             id: string;
-            name: string;
-            createdAt: Date;
-            updatedAt: Date;
             workspaceId: string;
             code: string;
-            nameAr: string;
+            name: string;
             isActive: boolean;
+            createdAt: Date;
+            updatedAt: Date;
         }[];
     }>;
 }

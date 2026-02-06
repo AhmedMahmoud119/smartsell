@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 import { settingsApi, Currency } from '@/lib/api/settings';
+import { CURRENCY_CODES } from '@/lib/constants/currencies';
+import SearchableSelect from '@/components/SearchableSelect';
 
 export default function CurrenciesTab() {
   const { t, locale } = useTranslation();
@@ -14,7 +16,6 @@ export default function CurrenciesTab() {
   const [formData, setFormData] = useState({
     code: '',
     name: '',
-    nameAr: '',
     symbol: '',
     isActive: true,
   });
@@ -54,7 +55,6 @@ export default function CurrenciesTab() {
       setFormData({
         code: currency.code,
         name: currency.name,
-        nameAr: currency.nameAr,
         symbol: currency.symbol,
         isActive: currency.isActive,
       });
@@ -63,7 +63,6 @@ export default function CurrenciesTab() {
       setFormData({
         code: '',
         name: '',
-        nameAr: '',
         symbol: '',
         isActive: true,
       });
@@ -83,7 +82,6 @@ export default function CurrenciesTab() {
         id: editingCurrency.id,
         data: {
           name: formData.name,
-          nameAr: formData.nameAr,
           symbol: formData.symbol,
           isActive: formData.isActive,
         },
@@ -100,7 +98,7 @@ export default function CurrenciesTab() {
   };
 
   const getCurrencyName = (currency: Currency) => {
-    return locale === 'ar' ? currency.nameAr : currency.name;
+    return currency.name;
   };
 
   if (isLoading) {
@@ -144,9 +142,6 @@ export default function CurrenciesTab() {
                   {t('settings.currencyName') || 'الاسم'}
                 </th>
                 <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {t('settings.currencyNameAr') || 'الاسم بالعربية'}
-                </th>
-                <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {t('common.status') || 'الحالة'}
                 </th>
                 <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -165,9 +160,6 @@ export default function CurrenciesTab() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="text-sm text-gray-700">{currency.name}</span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="text-sm text-gray-700" dir="rtl">{currency.nameAr}</span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {currency.isActive ? (
@@ -246,15 +238,24 @@ export default function CurrenciesTab() {
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">
                   {t('settings.currencyCode') || 'رمز العملة'} *
                 </label>
-                <input
-                  type="text"
-                  required
-                  maxLength={3}
+                <SearchableSelect
+                  options={CURRENCY_CODES.map((c) => ({
+                    value: c.code,
+                    label: `${c.code} - ${locale === 'ar' ? c.nameAr : c.name} (${c.symbol})`,
+                  }))}
                   value={formData.code}
-                  onChange={(e) => setFormData({ ...formData, code: e.target.value.toUpperCase() })}
+                  onChange={(value) => {
+                    const selected = CURRENCY_CODES.find((c) => c.code === value);
+                    setFormData({
+                      ...formData,
+                      code: value,
+                      name: selected?.name || '',
+                      symbol: selected?.symbol || '',
+                    });
+                  }}
+                  placeholder={t('settings.selectCurrency') || 'اختر العملة'}
                   disabled={!!editingCurrency}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent disabled:bg-gray-100"
-                  placeholder="SAR"
+                  isRTL={locale === 'ar'}
                 />
               </div>
 
@@ -268,22 +269,7 @@ export default function CurrenciesTab() {
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
-                  placeholder="Saudi Riyal"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                  {t('settings.currencyNameAr') || 'اسم العملة بالعربية'} *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formData.nameAr}
-                  onChange={(e) => setFormData({ ...formData, nameAr: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
-                  placeholder="ريال سعودي"
-                  dir="rtl"
+                  placeholder={t('settings.currencyNamePlaceholder') || 'مثال: ريال سعودي'}
                 />
               </div>
 
@@ -297,7 +283,7 @@ export default function CurrenciesTab() {
                   value={formData.symbol}
                   onChange={(e) => setFormData({ ...formData, symbol: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
-                  placeholder="ر.س"
+                  placeholder={t('settings.currencySymbolPlaceholder') || 'مثال: ر.س'}
                 />
               </div>
 

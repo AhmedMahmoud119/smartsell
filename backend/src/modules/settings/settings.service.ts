@@ -37,7 +37,6 @@ export class SettingsService {
         workspaceId,
         code: dto.code.toUpperCase(),
         name: dto.name,
-        nameAr: dto.nameAr,
         symbol: dto.symbol,
         isActive: dto.isActive ?? true,
       },

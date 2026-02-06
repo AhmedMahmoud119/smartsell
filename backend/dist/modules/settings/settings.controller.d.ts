@@ -8,35 +8,32 @@ export declare class SettingsController {
     getAllCurrencies(req: any): Promise<{
         symbol: string;
         id: string;
-        name: string;
-        createdAt: Date;
-        updatedAt: Date;
         workspaceId: string;
         code: string;
-        nameAr: string;
+        name: string;
         isActive: boolean;
+        createdAt: Date;
+        updatedAt: Date;
     }[]>;
     createCurrency(req: any, dto: CreateCurrencyDto): Promise<{
         symbol: string;
         id: string;
-        name: string;
-        createdAt: Date;
-        updatedAt: Date;
         workspaceId: string;
         code: string;
-        nameAr: string;
+        name: string;
         isActive: boolean;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     updateCurrency(req: any, currencyId: string, dto: UpdateCurrencyDto): Promise<{
         symbol: string;
         id: string;
-        name: string;
-        createdAt: Date;
-        updatedAt: Date;
         workspaceId: string;
         code: string;
-        nameAr: string;
+        name: string;
         isActive: boolean;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     deleteCurrency(req: any, currencyId: string): Promise<{
         message: string;
@@ -50,13 +47,12 @@ export declare class SettingsController {
         availableCurrencies: {
             symbol: string;
             id: string;
-            name: string;
-            createdAt: Date;
-            updatedAt: Date;
             workspaceId: string;
             code: string;
-            nameAr: string;
+            name: string;
             isActive: boolean;
+            createdAt: Date;
+            updatedAt: Date;
         }[];
     }>;
     updateStoreCurrencies(req: any, storeId: string, dto: UpdateCurrenciesDto): Promise<{
@@ -68,13 +64,12 @@ export declare class SettingsController {
         availableCurrencies: {
             symbol: string;
             id: string;
-            name: string;
-            createdAt: Date;
-            updatedAt: Date;
             workspaceId: string;
             code: string;
-            nameAr: string;
+            name: string;
             isActive: boolean;
+            createdAt: Date;
+            updatedAt: Date;
         }[];
     }>;
 }

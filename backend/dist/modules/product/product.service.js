@@ -23,35 +23,37 @@ let ProductService = class ProductService {
             .replace(/^-+|-+$/g, '');
     }
     async create(userId, workspaceId, dto) {
-        const store = await this.prisma.store.findFirst({
-            where: {
-                id: dto.storeId,
-                workspaceId,
-            },
-            include: {
-                workspace: {
-                    include: {
-                        plan: true,
+        if (dto.storeId) {
+            const store = await this.prisma.store.findFirst({
+                where: {
+                    id: dto.storeId,
+                    workspaceId,
+                },
+                include: {
+                    workspace: {
+                        include: {
+                            plan: true,
+                        },
+                    },
+                    _count: {
+                        select: {
+                            products: true,
+                        },
                     },
                 },
-                _count: {
-                    select: {
-                        products: true,
-                    },
-                },
-            },
-        });
-        if (!store) {
-            throw new common_1.NotFoundException('Store not found');
-        }
-        if (store._count.products >= store.workspace.plan.maxProductsPerStore) {
-            throw new common_1.BadRequestException(`Product limit reached. Your plan allows ${store.workspace.plan.maxProductsPerStore} products per store.`);
+            });
+            if (!store) {
+                throw new common_1.NotFoundException('Store not found');
+            }
+            if (store._count.products >= store.workspace.plan.maxProductsPerStore) {
+                throw new common_1.BadRequestException(`Product limit reached. Your plan allows ${store.workspace.plan.maxProductsPerStore} products per store.`);
+            }
         }
         let slug = this.generateSlug(dto.name);
         let counter = 1;
         while (await this.prisma.product.findFirst({
             where: {
-                storeId: dto.storeId,
+                workspaceId,
                 slug,
             },
         })) {
@@ -60,7 +62,8 @@ let ProductService = class ProductService {
         }
         const product = await this.prisma.product.create({
             data: {
-                storeId: dto.storeId,
+                workspaceId,
+                storeId: dto.storeId || null,
                 name: dto.name,
                 slug,
                 description: dto.description,
@@ -192,6 +195,71 @@ let ProductService = class ProductService {
             },
         });
         return { message: `${products.length} products updated successfully` };
+    }
+    async getUnassignedProducts(userId, workspaceId) {
+        return this.prisma.product.findMany({
+            where: {
+                workspaceId,
+                storeId: null,
+            },
+            orderBy: {
+                createdAt: 'desc',
+            },
+        });
+    }
+    async assignToStore(userId, workspaceId, productId, storeId) {
+        const product = await this.prisma.product.findFirst({
+            where: {
+                id: productId,
+                workspaceId,
+            },
+        });
+        if (!product) {
+            throw new common_1.NotFoundException('Product not found');
+        }
+        const store = await this.prisma.store.findFirst({
+            where: {
+                id: storeId,
+                workspaceId,
+            },
+            include: {
+                workspace: {
+                    include: {
+                        plan: true,
+                    },
+                },
+                _count: {
+                    select: {
+                        products: true,
+                    },
+                },
+            },
+        });
+        if (!store) {
+            throw new common_1.NotFoundException('Store not found');
+        }
+        if (store._count.products >= store.workspace.plan.maxProductsPerStore) {
+            throw new common_1.BadRequestException(`Product limit reached. Your plan allows ${store.workspace.plan.maxProductsPerStore} products per store.`);
+        }
+        return this.prisma.product.update({
+            where: { id: productId },
+            data: { storeId },
+        });
+    }
+    async unassignFromStore(userId, workspaceId, productId) {
+        const product = await this.prisma.product.findFirst({
+            where: {
+                id: productId,
+                workspaceId,
+            },
+        });
+        if (!product) {
+            throw new common_1.NotFoundException('Product not found');
+        }
+        return this.prisma.product.update({
+            where: { id: productId },
+            data: { storeId: null },
+        });
     }
 };
 exports.ProductService = ProductService;

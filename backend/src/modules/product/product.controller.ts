@@ -14,6 +14,7 @@ import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { AssignProductDto } from './dto/assign-product.dto';
 
 @Controller('product')
 @UseGuards(JwtAuthGuard)
@@ -82,5 +83,38 @@ export class ProductController {
       body.productIds,
       body.status,
     );
+  }
+
+  @Get('unassigned/list')
+  getUnassignedProducts(@Request() req) {
+    const userId = req.user.id;
+    const workspaceId = req.user.workspaces[0]?.workspace.id;
+
+    return this.productService.getUnassignedProducts(userId, workspaceId);
+  }
+
+  @Post(':id/assign-store')
+  assignToStore(
+    @Request() req,
+    @Param('id') id: string,
+    @Body() assignProductDto: AssignProductDto,
+  ) {
+    const userId = req.user.id;
+    const workspaceId = req.user.workspaces[0]?.workspace.id;
+
+    return this.productService.assignToStore(
+      userId,
+      workspaceId,
+      id,
+      assignProductDto.storeId,
+    );
+  }
+
+  @Delete(':id/unassign-store')
+  unassignFromStore(@Request() req, @Param('id') id: string) {
+    const userId = req.user.id;
+    const workspaceId = req.user.workspaces[0]?.workspace.id;
+
+    return this.productService.unassignFromStore(userId, workspaceId, id);
   }
 }

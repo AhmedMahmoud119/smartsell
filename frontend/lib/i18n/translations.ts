@@ -439,6 +439,10 @@ export const translations = {
       autoConvert: 'تحويل الأسعار تلقائياً',
       autoConvertDescription: 'تحويل الأسعار تلقائياً إلى العملة المختارة من العميل باستخدام أسعار الصرف.',
       default: 'افتراضي',
+      selectCurrency: 'اختر العملة',
+      active: 'نشط',
+      currencyNamePlaceholder: 'مثال: ريال سعودي',
+      currencySymbolPlaceholder: 'مثال: ر.س',
     },
     common: {
       loading: 'جارٍ التحميل...',
@@ -454,6 +458,7 @@ export const translations = {
       filter: 'تصفية',
       actions: 'الإجراءات',
       configure: 'إعداد',
+      status: 'الحالة',
     },
   },
   en: {
@@ -896,6 +901,10 @@ export const translations = {
       autoConvert: 'Auto Convert Prices',
       autoConvertDescription: 'Automatically convert prices to customer\'s selected currency using exchange rates.',
       default: 'Default',
+      selectCurrency: 'Select Currency',
+      active: 'Active',
+      currencyNamePlaceholder: 'e.g., Saudi Riyal',
+      currencySymbolPlaceholder: 'e.g., ر.س',
     },
     common: {
       loading: 'Loading...',
@@ -911,6 +920,7 @@ export const translations = {
       filter: 'Filter',
       actions: 'Actions',
       configure: 'Configure',
+      status: 'Status',
     },
   },
 } as const;

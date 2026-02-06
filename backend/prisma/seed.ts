@@ -86,6 +86,59 @@ async function main() {
     console.log(`✅ Created plan: ${plan.name}`);
   }
 
+  // Get or create a default workspace for currencies
+  const defaultWorkspace = await prisma.workspace.findFirst();
+  
+  if (defaultWorkspace) {
+    // Create default currencies
+    const currencies = [
+      {
+        workspaceId: defaultWorkspace.id,
+        code: 'SAR',
+        name: 'Saudi Riyal',
+        symbol: 'ر.س',
+        isActive: true,
+      },
+      {
+        workspaceId: defaultWorkspace.id,
+        code: 'USD',
+        name: 'US Dollar',
+        symbol: '$',
+        isActive: true,
+      },
+      {
+        workspaceId: defaultWorkspace.id,
+        code: 'EUR',
+        name: 'Euro',
+        symbol: '€',
+        isActive: true,
+      },
+      {
+        workspaceId: defaultWorkspace.id,
+        code: 'AED',
+        name: 'UAE Dirham',
+        symbol: 'د.إ',
+        isActive: true,
+      },
+    ];
+
+    for (const currency of currencies) {
+      await prisma.currency.upsert({
+        where: {
+          workspaceId_code: {
+            workspaceId: currency.workspaceId,
+            code: currency.code,
+          },
+        },
+        update: currency,
+        create: currency,
+      });
+      console.log(`✅ Created currency: ${currency.code} - ${currency.name}`);
+    }
+  } else {
+    console.log('⚠️  No workspace found, skipping currency seeding');
+  }
+
   console.log('🎉 Seeding completed!');
 }
 

@@ -5,21 +5,29 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 import { storeApi } from '@/lib/api/store';
+import { settingsApi } from '@/lib/api/settings';
 import { Store } from '@/lib/types';
 
 export default function StoresPage() {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const router = useRouter();
   const queryClient = useQueryClient();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newStoreName, setNewStoreName] = useState('');
   const [newStoreDescription, setNewStoreDescription] = useState('');
+  const [selectedCurrency, setSelectedCurrency] = useState('SAR');
   const [isCreating, setIsCreating] = useState(false);
 
   // Fetch stores
   const { data: stores, isLoading } = useQuery({
     queryKey: ['stores'],
     queryFn: () => storeApi.getAll(),
+  });
+
+  // Fetch workspace currencies
+  const { data: currencies } = useQuery({
+    queryKey: ['workspace-currencies'],
+    queryFn: () => settingsApi.getAllCurrencies(),
   });
 
   // Create store mutation
@@ -31,6 +39,7 @@ export default function StoresPage() {
       setShowCreateModal(false);
       setNewStoreName('');
       setNewStoreDescription('');
+      setSelectedCurrency('SAR');
     },
   });
 
@@ -51,6 +60,7 @@ export default function StoresPage() {
       await createMutation.mutateAsync({
         name: newStoreName,
         description: newStoreDescription || undefined,
+        currency: selectedCurrency,
       });
     } finally {
       setIsCreating(false);
@@ -277,6 +287,29 @@ export default function StoresPage() {
                   placeholder={t('stores.description')}
                 />
               </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {t('settings.currency') || 'Currency'}
+                </label>
+                <select
+                  value={selectedCurrency}
+                  onChange={(e) => setSelectedCurrency(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                >
+                  {currencies && currencies.length > 0 ? (
+                    currencies
+                      .filter((c) => c.isActive)
+                      .map((currency) => (
+                        <option key={currency.id} value={currency.code}>
+                          {currency.symbol} - {locale === 'ar' ? currency.nameAr : currency.name} ({currency.code})
+                        </option>
+                      ))
+                  ) : (
+                    <option value="SAR">ر.س - Saudi Riyal (SAR)</option>
+                  )}
+                </select>
+              </div>
             </div>
 
             <div className="flex gap-3 mt-6">
@@ -285,6 +318,7 @@ export default function StoresPage() {
                   setShowCreateModal(false);
                   setNewStoreName('');
                   setNewStoreDescription('');
+                  setSelectedCurrency('SAR');
                 }}
                 className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition"
                 disabled={isCreating}

@@ -15,13 +15,13 @@ export declare class JwtStrategy extends JwtStrategy_base {
         workspaces: ({
             workspace: {
                 plan: {
+                    currency: string;
                     id: string;
                     name: string;
                     createdAt: Date;
                     updatedAt: Date;
                     slug: string;
                     price: number;
-                    currency: string;
                     maxStores: number;
                     maxProductsPerStore: number;
                     maxOrdersPerMonth: number;

@@ -23,11 +23,6 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
-], UpdateCurrencyDto.prototype, "nameAr", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
 ], UpdateCurrencyDto.prototype, "symbol", void 0);
 __decorate([
     (0, class_validator_1.IsBoolean)(),

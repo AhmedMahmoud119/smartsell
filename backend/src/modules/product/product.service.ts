@@ -20,35 +20,37 @@ export class ProductService {
   }
 
   async create(userId: string, workspaceId: string, dto: CreateProductDto) {
-    // Verify store belongs to workspace
-    const store = await this.prisma.store.findFirst({
-      where: {
-        id: dto.storeId,
-        workspaceId,
-      },
-      include: {
-        workspace: {
-          include: {
-            plan: true,
+    // If storeId is provided, verify store belongs to workspace
+    if (dto.storeId) {
+      const store = await this.prisma.store.findFirst({
+        where: {
+          id: dto.storeId,
+          workspaceId,
+        },
+        include: {
+          workspace: {
+            include: {
+              plan: true,
+            },
+          },
+          _count: {
+            select: {
+              products: true,
+            },
           },
         },
-        _count: {
-          select: {
-            products: true,
-          },
-        },
-      },
-    });
+      });
 
-    if (!store) {
-      throw new NotFoundException('Store not found');
-    }
+      if (!store) {
+        throw new NotFoundException('Store not found');
+      }
 
-    // Check product limit
-    if (store._count.products >= store.workspace.plan.maxProductsPerStore) {
-      throw new BadRequestException(
-        `Product limit reached. Your plan allows ${store.workspace.plan.maxProductsPerStore} products per store.`,
-      );
+      // Check product limit
+      if (store._count.products >= store.workspace.plan.maxProductsPerStore) {
+        throw new BadRequestException(
+          `Product limit reached. Your plan allows ${store.workspace.plan.maxProductsPerStore} products per store.`,
+        );
+      }
     }
 
     // Generate unique slug
@@ -57,7 +59,7 @@ export class ProductService {
     while (
       await this.prisma.product.findFirst({
         where: {
-          storeId: dto.storeId,
+          workspaceId,
           slug,
         },
       })
@@ -69,7 +71,8 @@ export class ProductService {
     // Create product
     const product = await this.prisma.product.create({
       data: {
-        storeId: dto.storeId,
+        workspaceId,
+        storeId: dto.storeId || null,
         name: dto.name,
         slug,
         description: dto.description,
@@ -244,5 +247,100 @@ export class ProductService {
     });
 
     return { message: `${products.length} products updated successfully` };
+  }
+
+  // Get products not assigned to any store
+  async getUnassignedProducts(userId: string, workspaceId: string) {
+    return this.prisma.product.findMany({
+      where: {
+        workspaceId,
+        storeId: null,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
+
+  // Assign product to a store
+  async assignToStore(
+    userId: string,
+    workspaceId: string,
+    productId: string,
+    storeId: string,
+  ) {
+    // Verify product belongs to workspace
+    const product = await this.prisma.product.findFirst({
+      where: {
+        id: productId,
+        workspaceId,
+      },
+    });
+
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
+
+    // Verify store belongs to workspace
+    const store = await this.prisma.store.findFirst({
+      where: {
+        id: storeId,
+        workspaceId,
+      },
+      include: {
+        workspace: {
+          include: {
+            plan: true,
+          },
+        },
+        _count: {
+          select: {
+            products: true,
+          },
+        },
+      },
+    });
+
+    if (!store) {
+      throw new NotFoundException('Store not found');
+    }
+
+    // Check product limit
+    if (store._count.products >= store.workspace.plan.maxProductsPerStore) {
+      throw new BadRequestException(
+        `Product limit reached. Your plan allows ${store.workspace.plan.maxProductsPerStore} products per store.`,
+      );
+    }
+
+    // Assign product to store
+    return this.prisma.product.update({
+      where: { id: productId },
+      data: { storeId },
+    });
+  }
+
+  // Unassign product from store
+  async unassignFromStore(
+    userId: string,
+    workspaceId: string,
+    productId: string,
+  ) {
+    // Verify product belongs to workspace
+    const product = await this.prisma.product.findFirst({
+      where: {
+        id: productId,
+        workspaceId,
+      },
+    });
+
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
+
+    // Unassign product
+    return this.prisma.product.update({
+      where: { id: productId },
+      data: { storeId: null },
+    });
   }
 }

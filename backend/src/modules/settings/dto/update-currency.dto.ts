@@ -7,10 +7,6 @@ export class UpdateCurrencyDto {
 
   @IsString()
   @IsOptional()
-  nameAr?: string;
-
-  @IsString()
-  @IsOptional()
   symbol?: string;
 
   @IsBoolean()

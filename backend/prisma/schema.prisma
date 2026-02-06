@@ -72,6 +72,7 @@ model Workspace {
   subscriptions Subscription[]
   usage       UsageRecord[]
   currencies  Currency[]
+  products    Product[]
 
   @@index([slug])
 }
@@ -175,7 +176,6 @@ model Currency {
 
   code        String   // e.g., "SAR", "USD"
   name        String   // e.g., "Saudi Riyal"
-  nameAr      String   // e.g., "ريال سعودي"
   symbol      String   // e.g., "ر.س"
   isActive    Boolean  @default(true)
 
@@ -349,7 +349,8 @@ model Collection {
 
 model Product {
   id          String   @id @default(cuid())
-  storeId     String
+  workspaceId String
+  storeId     String?
 
   // Basic Info
   name        String
@@ -419,13 +420,15 @@ model Product {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  store       Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  store       Store?    @relation(fields: [storeId], references: [id], onDelete: SetNull)
 
   collections ProductCollection[]
   variants    ProductVariant[]
   orderItems  OrderItem[]
 
-  @@unique([storeId, slug])
+  @@unique([workspaceId, slug])
+  @@index([workspaceId])
   @@index([storeId])
   @@index([status])
   @@index([storeId, landingPageSlug])

@@ -18,6 +18,7 @@ const jwt_auth_guard_1 = require("../../common/guards/jwt-auth.guard");
 const product_service_1 = require("./product.service");
 const create_product_dto_1 = require("./dto/create-product.dto");
 const update_product_dto_1 = require("./dto/update-product.dto");
+const assign_product_dto_1 = require("./dto/assign-product.dto");
 let ProductController = class ProductController {
     constructor(productService) {
         this.productService = productService;
@@ -51,6 +52,21 @@ let ProductController = class ProductController {
         const userId = req.user.id;
         const workspaceId = req.user.workspaces[0]?.workspace.id;
         return this.productService.bulkUpdateStatus(userId, workspaceId, body.productIds, body.status);
+    }
+    getUnassignedProducts(req) {
+        const userId = req.user.id;
+        const workspaceId = req.user.workspaces[0]?.workspace.id;
+        return this.productService.getUnassignedProducts(userId, workspaceId);
+    }
+    assignToStore(req, id, assignProductDto) {
+        const userId = req.user.id;
+        const workspaceId = req.user.workspaces[0]?.workspace.id;
+        return this.productService.assignToStore(userId, workspaceId, id, assignProductDto.storeId);
+    }
+    unassignFromStore(req, id) {
+        const userId = req.user.id;
+        const workspaceId = req.user.workspaces[0]?.workspace.id;
+        return this.productService.unassignFromStore(userId, workspaceId, id);
     }
 };
 exports.ProductController = ProductController;
@@ -104,6 +120,30 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], ProductController.prototype, "bulkUpdateStatus", null);
+__decorate([
+    (0, common_1.Get)('unassigned/list'),
+    __param(0, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], ProductController.prototype, "getUnassignedProducts", null);
+__decorate([
+    (0, common_1.Post)(':id/assign-store'),
+    __param(0, (0, common_1.Request)()),
+    __param(1, (0, common_1.Param)('id')),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, assign_product_dto_1.AssignProductDto]),
+    __metadata("design:returntype", void 0)
+], ProductController.prototype, "assignToStore", null);
+__decorate([
+    (0, common_1.Delete)(':id/unassign-store'),
+    __param(0, (0, common_1.Request)()),
+    __param(1, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", void 0)
+], ProductController.prototype, "unassignFromStore", null);
 exports.ProductController = ProductController = __decorate([
     (0, common_1.Controller)('product'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),

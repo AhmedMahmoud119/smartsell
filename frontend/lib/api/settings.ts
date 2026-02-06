@@ -5,7 +5,6 @@ export interface Currency {
   code: string;
   name: string;
   symbol: string;
-  nameAr: string;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
@@ -23,14 +22,12 @@ export interface CurrencySettings {
 export interface CreateCurrencyData {
   code: string;
   name: string;
-  nameAr: string;
   symbol: string;
   isActive?: boolean;
 }
 
 export interface UpdateCurrencyData {
   name?: string;
-  nameAr?: string;
   symbol?: string;
   isActive?: boolean;
 }
