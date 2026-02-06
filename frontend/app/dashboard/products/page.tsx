@@ -162,7 +162,7 @@ export default function AllProductsPage() {
           <select
             value={selectedStoreFilter}
             onChange={(e) => setSelectedStoreFilter(e.target.value)}
-            className="px-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
           >
             <option value="">{t('products.allStores') || 'All Stores'}</option>
             {stores?.map((store) => (
@@ -176,8 +176,8 @@ export default function AllProductsPage() {
 
       {/* Bulk Actions */}
       {selectedProducts.length > 0 && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-center justify-between">
-          <span className="text-sm text-blue-900">
+        <div className="bg-cyan-50 border border-cyan-200 rounded-lg p-4 flex items-center justify-between">
+          <span className="text-sm text-cyan-900">
             {selectedProducts.length} {t('products.selected')}
           </span>
           <div className="flex gap-2">
@@ -214,7 +214,7 @@ export default function AllProductsPage() {
                     type="checkbox"
                     checked={selectedProducts.length === products.length}
                     onChange={handleSelectAll}
-                    className="w-4 h-4 text-blue-600 rounded"
+                    className="w-4 h-4 text-cyan-600 rounded"
                   />
                 </th>
                 <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -245,7 +245,7 @@ export default function AllProductsPage() {
                       type="checkbox"
                       checked={selectedProducts.includes(product.id)}
                       onChange={() => handleSelectProduct(product.id)}
-                      className="w-4 h-4 text-blue-600 rounded"
+                      className="w-4 h-4 text-cyan-600 rounded"
                     />
                   </td>
                   <td className="px-6 py-4">
@@ -357,7 +357,7 @@ export default function AllProductsPage() {
           <p className="text-gray-600 mb-6">{t('products.createFirstProduct')}</p>
           <button
             onClick={() => router.push('/dashboard/stores')}
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+            className="px-6 py-3 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition"
           >
             {t('dashboard.stores')}
           </button>

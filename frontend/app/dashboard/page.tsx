@@ -111,16 +111,16 @@ export default function DashboardPage() {
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Total Stores */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div className="bg-pink-50 rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-500">{t('dashboard.totalStores')}</p>
-              <p className="text-3xl font-bold text-gray-900 mt-1">
+            <div className="flex-1">
+              <p className="text-sm text-gray-600 mb-1">{t('dashboard.totalStores')}</p>
+              <p className="text-2xl font-bold text-gray-900">
                 {statsLoading ? '-' : formatNumber(stats?.totalStores || 0)}
               </p>
             </div>
-            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-              <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-pink-100 text-pink-600 w-12 h-12 rounded-full flex items-center justify-center">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
               </svg>
             </div>
@@ -128,16 +128,16 @@ export default function DashboardPage() {
         </div>
 
         {/* Total Products */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div className="bg-green-50 rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-500">{t('dashboard.totalProducts')}</p>
-              <p className="text-3xl font-bold text-gray-900 mt-1">
+            <div className="flex-1">
+              <p className="text-sm text-gray-600 mb-1">{t('dashboard.totalProducts')}</p>
+              <p className="text-2xl font-bold text-gray-900">
                 {statsLoading ? '-' : formatNumber(stats?.totalProducts || 0)}
               </p>
             </div>
-            <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-              <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-green-100 text-green-600 w-12 h-12 rounded-full flex items-center justify-center">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
               </svg>
             </div>
@@ -145,21 +145,16 @@ export default function DashboardPage() {
         </div>
 
         {/* Total Orders */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div className="bg-purple-50 rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-500">{t('dashboard.totalOrders')}</p>
-              <p className="text-3xl font-bold text-gray-900 mt-1">
+            <div className="flex-1">
+              <p className="text-sm text-gray-600 mb-1">{t('dashboard.totalOrders')}</p>
+              <p className="text-2xl font-bold text-gray-900">
                 {statsLoading ? '-' : formatNumber(stats?.totalOrders || 0)}
               </p>
-              {stats?.ordersChange !== undefined && stats.ordersChange !== 0 && (
-                <p className={`text-xs mt-1 ${stats.ordersChange > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                  {stats.ordersChange > 0 ? '↑' : '↓'} {Math.abs(stats.ordersChange)}% {t(`analytics.${stats.ordersChange > 0 ? 'growth' : 'decline'}`)}
-                </p>
-              )}
             </div>
-            <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
-              <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-purple-100 text-purple-600 w-12 h-12 rounded-full flex items-center justify-center">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
               </svg>
             </div>
@@ -167,21 +162,16 @@ export default function DashboardPage() {
         </div>
 
         {/* Total Revenue */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div className="bg-orange-50 rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-500">{t('analytics.totalRevenue')}</p>
-              <p className="text-3xl font-bold text-gray-900 mt-1">
+            <div className="flex-1">
+              <p className="text-sm text-gray-600 mb-1">{t('analytics.totalRevenue')}</p>
+              <p className="text-2xl font-bold text-gray-900">
                 {statsLoading ? '-' : formatCurrency(stats?.totalRevenue || 0)}
               </p>
-              {stats?.revenueChange !== undefined && stats.revenueChange !== 0 && (
-                <p className={`text-xs mt-1 ${stats.revenueChange > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                  {stats.revenueChange > 0 ? '↑' : '↓'} {Math.abs(stats.revenueChange)}% {t(`analytics.${stats.revenueChange > 0 ? 'growth' : 'decline'}`)}
-                </p>
-              )}
             </div>
-            <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
-              <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-orange-100 text-orange-600 w-12 h-12 rounded-full flex items-center justify-center">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
@@ -250,8 +240,8 @@ export default function DashboardPage() {
                   className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-10 h-10 bg-cyan-100 rounded-lg flex items-center justify-center">
+                      <svg className="w-5 h-5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                       </svg>
                     </div>

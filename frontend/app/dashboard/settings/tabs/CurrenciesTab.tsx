@@ -19,13 +19,11 @@ export default function CurrenciesTab() {
     isActive: true,
   });
 
-  // Fetch currencies
   const { data: currencies, isLoading } = useQuery({
     queryKey: ['workspace-currencies'],
     queryFn: () => settingsApi.getAllCurrencies(),
   });
 
-  // Create mutation
   const createMutation = useMutation({
     mutationFn: settingsApi.createCurrency,
     onSuccess: () => {
@@ -34,7 +32,6 @@ export default function CurrenciesTab() {
     },
   });
 
-  // Update mutation
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: { id: string; data: any }) =>
       settingsApi.updateCurrency(id, data),
@@ -44,7 +41,6 @@ export default function CurrenciesTab() {
     },
   });
 
-  // Delete mutation
   const deleteMutation = useMutation({
     mutationFn: settingsApi.deleteCurrency,
     onSuccess: () => {
@@ -78,13 +74,6 @@ export default function CurrenciesTab() {
   const closeModal = () => {
     setIsModalOpen(false);
     setEditingCurrency(null);
-    setFormData({
-      code: '',
-      name: '',
-      nameAr: '',
-      symbol: '',
-      isActive: true,
-    });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -105,7 +94,7 @@ export default function CurrenciesTab() {
   };
 
   const handleDelete = (id: string) => {
-    if (confirm(t('settings.confirmDeleteCurrency') || 'Are you sure you want to delete this currency?')) {
+    if (confirm(t('settings.confirmDeleteCurrency') || 'Are you sure?')) {
       deleteMutation.mutate(id);
     }
   };
@@ -117,105 +106,145 @@ export default function CurrenciesTab() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full"></div>
+        <div className="w-8 h-8 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
+      {/* Header with Add Button */}
+      <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-xl font-semibold text-gray-900">
-            {t('settings.manageCurrencies') || 'Manage Currencies'}
+          <h2 className="text-xl font-semibold text-gray-800">
+            {t('settings.manageCurrencies') || 'إدارة العملات'}
           </h2>
-          <p className="text-sm text-gray-600 mt-1">
-            {t('settings.manageCurrenciesDescription') || 'Add, edit, or remove currencies for your workspace'}
-          </p>
         </div>
         <button
           onClick={() => openModal()}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center gap-2"
+          className="px-6 py-2.5 bg-cyan-500 hover:bg-cyan-600 text-white text-sm font-medium rounded-lg transition-colors"
         >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-          </svg>
-          {t('settings.addCurrency') || 'Add Currency'}
+          + {t('settings.addCurrency') || 'إضافة عملة'}
         </button>
       </div>
 
-      {/* Currencies Grid */}
+      {/* Table */}
       {currencies && currencies.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {currencies.map((currency: Currency) => (
-            <div
-              key={currency.id}
-              className={`p-4 rounded-lg border-2 transition ${
-                currency.isActive
-                  ? 'border-gray-200 bg-white'
-                  : 'border-gray-100 bg-gray-50 opacity-60'
-              }`}
-            >
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center gap-3">
-                  <span className="text-3xl">{currency.symbol}</span>
-                  <div>
-                    <p className="font-semibold text-gray-900">{currency.code}</p>
-                    <p className="text-sm text-gray-600">{getCurrencyName(currency)}</p>
-                  </div>
-                </div>
-                {!currency.isActive && (
-                  <span className="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded">
-                    {t('settings.inactive') || 'Inactive'}
-                  </span>
-                )}
-              </div>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => openModal(currency)}
-                  className="flex-1 px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition"
-                >
-                  {t('common.edit') || 'Edit'}
-                </button>
-                <button
-                  onClick={() => handleDelete(currency.id)}
-                  className="flex-1 px-3 py-1.5 text-sm bg-red-50 text-red-600 rounded hover:bg-red-100 transition"
-                >
-                  {t('common.delete') || 'Delete'}
-                </button>
-              </div>
-            </div>
-          ))}
+        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+          <table className="w-full">
+            <thead className="bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {t('settings.currencyCode') || 'الرمز'}
+                </th>
+                <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {t('settings.currencySymbol') || 'الرمز'}
+                </th>
+                <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {t('settings.currencyName') || 'الاسم'}
+                </th>
+                <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {t('settings.currencyNameAr') || 'الاسم بالعربية'}
+                </th>
+                <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {t('common.status') || 'الحالة'}
+                </th>
+                <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {t('common.actions') || 'الإجراءات'}
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {currencies.map((currency: Currency) => (
+                <tr key={currency.id} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className="text-sm font-medium text-gray-900">{currency.code}</span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className="text-lg text-gray-700">{currency.symbol}</span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className="text-sm text-gray-700">{currency.name}</span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className="text-sm text-gray-700" dir="rtl">{currency.nameAr}</span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {currency.isActive ? (
+                      <span className="px-3 py-1 inline-flex text-xs leading-5 font-medium rounded-full bg-green-100 text-green-800">
+                        {t('settings.active') || 'نشط'}
+                      </span>
+                    ) : (
+                      <span className="px-3 py-1 inline-flex text-xs leading-5 font-medium rounded-full bg-gray-100 text-gray-600">
+                        {t('settings.inactive') || 'غير نشط'}
+                      </span>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm">
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => openModal(currency)}
+                        className="p-2 text-cyan-600 hover:bg-cyan-50 rounded-lg transition-colors"
+                        title={t('common.edit') || 'تعديل'}
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                      </button>
+                      <button
+                        onClick={() => handleDelete(currency.id)}
+                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        title={t('common.delete') || 'حذف'}
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       ) : (
-        <div className="text-center py-12 bg-gray-50 rounded-lg">
-          <p className="text-gray-600 mb-4">
-            {t('settings.noCurrencies') || 'No currencies yet'}
-          </p>
+        <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
+          <p className="text-gray-500 mb-4">{t('settings.noCurrencies') || 'لا توجد عملات'}</p>
           <button
             onClick={() => openModal()}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+            className="px-6 py-2.5 bg-cyan-500 hover:bg-cyan-600 text-white text-sm font-medium rounded-lg transition-colors"
           >
-            {t('settings.addFirstCurrency') || 'Add your first currency'}
+            + {t('settings.addFirstCurrency') || 'إضافة أول عملة'}
           </button>
         </div>
       )}
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-md w-full p-6">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">
-              {editingCurrency
-                ? (t('settings.editCurrency') || 'Edit Currency')
-                : (t('settings.addCurrency') || 'Add Currency')}
-            </h3>
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-md w-full shadow-xl">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900">
+                {editingCurrency
+                  ? (t('settings.editCurrency') || 'تعديل العملة')
+                  : (t('settings.addCurrency') || 'إضافة عملة')}
+              </h3>
+              <button
+                onClick={closeModal}
+                className="p-1 hover:bg-gray-100 rounded transition-colors"
+              >
+                <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Modal Body */}
+            <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t('settings.currencyCode') || 'Currency Code'} *
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  {t('settings.currencyCode') || 'رمز العملة'} *
                 </label>
                 <input
                   type="text"
@@ -224,82 +253,84 @@ export default function CurrenciesTab() {
                   value={formData.code}
                   onChange={(e) => setFormData({ ...formData, code: e.target.value.toUpperCase() })}
                   disabled={!!editingCurrency}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent disabled:bg-gray-100"
                   placeholder="SAR"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t('settings.currencyName') || 'Currency Name'} *
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  {t('settings.currencyName') || 'اسم العملة'} *
                 </label>
                 <input
                   type="text"
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                   placeholder="Saudi Riyal"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t('settings.currencyNameAr') || 'Currency Name (Arabic)'} *
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  {t('settings.currencyNameAr') || 'اسم العملة بالعربية'} *
                 </label>
                 <input
                   type="text"
                   required
                   value={formData.nameAr}
                   onChange={(e) => setFormData({ ...formData, nameAr: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                   placeholder="ريال سعودي"
+                  dir="rtl"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t('settings.currencySymbol') || 'Currency Symbol'} *
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  {t('settings.currencySymbol') || 'رمز العملة'} *
                 </label>
                 <input
                   type="text"
                   required
                   value={formData.symbol}
                   onChange={(e) => setFormData({ ...formData, symbol: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                   placeholder="ر.س"
                 />
               </div>
 
-              <div className="flex items-center">
+              <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
                   id="isActive"
                   checked={formData.isActive}
                   onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                  className="w-4 h-4 text-blue-600 rounded"
+                  className="w-4 h-4 text-cyan-600 rounded focus:ring-cyan-500"
                 />
-                <label htmlFor="isActive" className="ms-2 text-sm text-gray-700">
-                  {t('settings.activeCurrency') || 'Active'}
+                <label htmlFor="isActive" className="text-sm text-gray-700">
+                  {t('settings.activeCurrency') || 'نشط'}
                 </label>
               </div>
 
+              {/* Modal Footer */}
               <div className="flex gap-3 pt-4">
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition"
+                  className="flex-1 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg transition-colors"
                 >
-                  {t('common.cancel') || 'Cancel'}
+                  {t('common.cancel') || 'إلغاء'}
                 </button>
                 <button
                   type="submit"
                   disabled={createMutation.isPending || updateMutation.isPending}
-                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+                  className="flex-1 px-4 py-2.5 bg-cyan-500 hover:bg-cyan-600 text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
                 >
                   {createMutation.isPending || updateMutation.isPending
-                    ? (t('common.saving') || 'Saving...')
-                    : (t('common.save') || 'Save')}
+                    ? (t('common.saving') || 'جاري الحفظ...')
+                    : (t('common.save') || 'حفظ')}
                 </button>
               </div>
             </form>
