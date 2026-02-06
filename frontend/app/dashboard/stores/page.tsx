@@ -102,7 +102,7 @@ export default function StoresPage() {
         <h1 className="text-2xl font-bold text-gray-900">{t('stores.title')}</h1>
         <button
           onClick={() => setShowCreateModal(true)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          className="px-4 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition"
         >
           {t('stores.createStore')}
         </button>
@@ -179,7 +179,7 @@ export default function StoresPage() {
                     onClick={() =>
                       router.push(`/dashboard/stores/${store.id}/products`)
                     }
-                    className="flex-1 px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition text-sm"
+                    className="flex-1 px-3 py-2 bg-cyan-500 text-white rounded hover:bg-cyan-600 transition text-sm"
                   >
                     {t('stores.products')}
                   </button>
@@ -235,7 +235,7 @@ export default function StoresPage() {
           <p className="text-gray-600 mb-6">{t('stores.createFirstStore')}</p>
           <button
             onClick={() => setShowCreateModal(true)}
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+            className="px-6 py-3 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition"
           >
             {t('stores.createStore')}
           </button>
@@ -259,7 +259,7 @@ export default function StoresPage() {
                   type="text"
                   value={newStoreName}
                   onChange={(e) => setNewStoreName(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                   placeholder={t('stores.storeName')}
                   autoFocus
                 />
@@ -272,7 +272,7 @@ export default function StoresPage() {
                 <textarea
                   value={newStoreDescription}
                   onChange={(e) => setNewStoreDescription(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                   rows={3}
                   placeholder={t('stores.description')}
                 />
@@ -293,7 +293,7 @@ export default function StoresPage() {
               </button>
               <button
                 onClick={handleCreateStore}
-                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 px-4 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={isCreating || !newStoreName.trim()}
               >
                 {isCreating ? t('stores.creating') : t('stores.create')}
