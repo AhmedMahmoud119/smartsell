@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 import { productApi } from '@/lib/api/product';
 import { storeApi } from '@/lib/api/store';
+import { settingsApi } from '@/lib/api/settings';
 import { ImageUpload } from '@/components/ImageUpload';
 import { DiscountEditor } from '@/components/DiscountEditor';
 
@@ -21,6 +22,7 @@ export default function NewStandaloneProductPage() {
     name: '',
     description: '',
     price: '',
+    currency: 'SAR', // Default currency
     costPrice: '',
     sku: '',
     trackInventory: true,
@@ -35,6 +37,12 @@ export default function NewStandaloneProductPage() {
   const { data: stores } = useQuery({
     queryKey: ['stores'],
     queryFn: () => storeApi.getAll(),
+  });
+
+  // Fetch all currencies
+  const { data: currencies } = useQuery({
+    queryKey: ['currencies'],
+    queryFn: () => settingsApi.getAllCurrencies(),
   });
 
   // Create product mutation
@@ -153,22 +161,37 @@ export default function NewStandaloneProductPage() {
               </h2>
 
               <div className="grid grid-cols-2 gap-4 mb-4">
+                {/* Price with inline currency */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     {t('products.price')} *
                   </label>
-                  <input
-                    type="number"
-                    required
-                    step="0.01"
-                    min="0"
-                    value={formData.price}
-                    onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
-                    placeholder="0.00"
-                  />
+                  <div className="flex gap-2">
+                    <input
+                      type="number"
+                      required
+                      step="0.01"
+                      min="0"
+                      value={formData.price}
+                      onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                      className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                      placeholder="0.00"
+                    />
+                    <select
+                      value={formData.currency}
+                      onChange={(e) => setFormData({ ...formData, currency: e.target.value })}
+                      className="w-24 px-2 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent text-sm"
+                    >
+                      {currencies?.filter(c => c.isActive).map(currency => (
+                        <option key={currency.code} value={currency.code}>
+                          {currency.code}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
 
+                {/* Cost Price */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     {t('products.costPrice')}
@@ -190,6 +213,7 @@ export default function NewStandaloneProductPage() {
                 discountType={formData.discountType}
                 discountValue={formData.discountValue}
                 price={priceInCents}
+                currency={formData.currency}
                 onDiscountTypeChange={(type) => setFormData({ ...formData, discountType: type })}
                 onDiscountValueChange={(value) => setFormData({ ...formData, discountValue: value })}
               />
