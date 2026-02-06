@@ -285,6 +285,7 @@ export const translations = {
       pricing: 'التسعير',
       inventory: 'المخزون',
       media: 'الوسائط',
+      allStores: 'جميع المتاجر',
     },
     orders: {
       title: 'الطلبات',
@@ -658,6 +659,7 @@ export const translations = {
       pricing: 'Pricing',
       inventory: 'Inventory',
       media: 'Media',
+      allStores: 'All Stores',
     },
     orders: {
       title: 'Orders',
