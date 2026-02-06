@@ -8,13 +8,13 @@ export declare class StoreService {
     create(userId: string, workspaceId: string, dto: CreateStoreDto): Promise<{
         workspace: {
             plan: {
+                currency: string;
                 name: string;
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
                 slug: string;
                 price: number;
-                currency: string;
                 maxStores: number;
                 maxProductsPerStore: number;
                 maxOrdersPerMonth: number;
@@ -37,6 +37,7 @@ export declare class StoreService {
             planId: string;
         };
     } & {
+        currency: string;
         email: string | null;
         name: string;
         phone: string | null;
@@ -44,7 +45,6 @@ export declare class StoreService {
         createdAt: Date;
         updatedAt: Date;
         slug: string;
-        currency: string;
         customDomain: string | null;
         workspaceId: string;
         status: import(".prisma/client").$Enums.StoreStatus;
@@ -79,6 +79,7 @@ export declare class StoreService {
             orders: number;
         };
     } & {
+        currency: string;
         email: string | null;
         name: string;
         phone: string | null;
@@ -86,7 +87,6 @@ export declare class StoreService {
         createdAt: Date;
         updatedAt: Date;
         slug: string;
-        currency: string;
         customDomain: string | null;
         workspaceId: string;
         status: import(".prisma/client").$Enums.StoreStatus;
@@ -122,6 +122,7 @@ export declare class StoreService {
             customers: number;
         };
     } & {
+        currency: string;
         email: string | null;
         name: string;
         phone: string | null;
@@ -129,7 +130,6 @@ export declare class StoreService {
         createdAt: Date;
         updatedAt: Date;
         slug: string;
-        currency: string;
         customDomain: string | null;
         workspaceId: string;
         status: import(".prisma/client").$Enums.StoreStatus;
@@ -165,6 +165,7 @@ export declare class StoreService {
             customers: number;
         };
     } & {
+        currency: string;
         email: string | null;
         name: string;
         phone: string | null;
@@ -172,7 +173,6 @@ export declare class StoreService {
         createdAt: Date;
         updatedAt: Date;
         slug: string;
-        currency: string;
         customDomain: string | null;
         workspaceId: string;
         status: import(".prisma/client").$Enums.StoreStatus;

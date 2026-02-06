@@ -13,6 +13,7 @@ import { CustomerModule } from './modules/customer/customer.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { PixelsModule } from './modules/pixels/pixels.module';
 import { UploadModule } from './modules/upload/upload.module';
+import { SettingsModule } from './modules/settings/settings.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { UploadModule } from './modules/upload/upload.module';
     AnalyticsModule,
     PixelsModule,
     UploadModule,
+    SettingsModule,
   ],
 })
 export class AppModule {}

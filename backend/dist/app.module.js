@@ -22,6 +22,7 @@ const customer_module_1 = require("./modules/customer/customer.module");
 const analytics_module_1 = require("./modules/analytics/analytics.module");
 const pixels_module_1 = require("./modules/pixels/pixels.module");
 const upload_module_1 = require("./modules/upload/upload.module");
+const settings_module_1 = require("./modules/settings/settings.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -49,6 +50,7 @@ exports.AppModule = AppModule = __decorate([
             analytics_module_1.AnalyticsModule,
             pixels_module_1.PixelsModule,
             upload_module_1.UploadModule,
+            settings_module_1.SettingsModule,
         ],
     })
 ], AppModule);

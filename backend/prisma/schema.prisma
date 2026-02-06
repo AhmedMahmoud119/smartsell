@@ -71,6 +71,7 @@ model Workspace {
   stores      Store[]
   subscriptions Subscription[]
   usage       UsageRecord[]
+  currencies  Currency[]
 
   @@index([slug])
 }
@@ -162,6 +163,29 @@ enum SubscriptionStatus {
   CANCELED
   PAST_DUE
   TRIALING
+}
+
+// =====================
+// CURRENCIES
+// =====================
+
+model Currency {
+  id          String   @id @default(cuid())
+  workspaceId String
+
+  code        String   // e.g., "SAR", "USD"
+  name        String   // e.g., "Saudi Riyal"
+  nameAr      String   // e.g., "ريال سعودي"
+  symbol      String   // e.g., "ر.س"
+  isActive    Boolean  @default(true)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, code])
+  @@index([workspaceId])
 }
 
 // =====================

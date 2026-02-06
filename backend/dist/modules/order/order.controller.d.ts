@@ -26,13 +26,13 @@ export declare class OrderController {
                 storeId: string;
                 compareAtPrice: number | null;
                 costPrice: number | null;
+                discountType: import(".prisma/client").$Enums.DiscountType | null;
+                discountValue: number | null;
                 sku: string | null;
                 trackInventory: boolean;
                 stock: number;
                 images: import("@prisma/client/runtime/library").JsonValue;
                 video: string | null;
-                discountType: import(".prisma/client").$Enums.DiscountType | null;
-                discountValue: number | null;
                 priceMultiCurrency: import("@prisma/client/runtime/library").JsonValue | null;
                 barcode: string | null;
                 lowStockThreshold: number;
@@ -66,11 +66,11 @@ export declare class OrderController {
             orderId: string;
         })[];
     } & {
+        currency: string;
         exchangeRate: number | null;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        currency: string;
         workspaceId: string;
         status: import(".prisma/client").$Enums.OrderStatus;
         canceledAt: Date | null;
@@ -130,11 +130,11 @@ export declare class OrderController {
             orderId: string;
         })[];
     } & {
+        currency: string;
         exchangeRate: number | null;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        currency: string;
         workspaceId: string;
         status: import(".prisma/client").$Enums.OrderStatus;
         canceledAt: Date | null;
@@ -201,11 +201,11 @@ export declare class OrderController {
             orderId: string;
         })[];
     } & {
+        currency: string;
         exchangeRate: number | null;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        currency: string;
         workspaceId: string;
         status: import(".prisma/client").$Enums.OrderStatus;
         canceledAt: Date | null;
@@ -261,13 +261,13 @@ export declare class OrderController {
                 storeId: string;
                 compareAtPrice: number | null;
                 costPrice: number | null;
+                discountType: import(".prisma/client").$Enums.DiscountType | null;
+                discountValue: number | null;
                 sku: string | null;
                 trackInventory: boolean;
                 stock: number;
                 images: import("@prisma/client/runtime/library").JsonValue;
                 video: string | null;
-                discountType: import(".prisma/client").$Enums.DiscountType | null;
-                discountValue: number | null;
                 priceMultiCurrency: import("@prisma/client/runtime/library").JsonValue | null;
                 barcode: string | null;
                 lowStockThreshold: number;
@@ -301,11 +301,11 @@ export declare class OrderController {
             orderId: string;
         })[];
     } & {
+        currency: string;
         exchangeRate: number | null;
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        currency: string;
         workspaceId: string;
         status: import(".prisma/client").$Enums.OrderStatus;
         canceledAt: Date | null;
