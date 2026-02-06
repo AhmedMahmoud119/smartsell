@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useLayoutEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
@@ -15,19 +15,67 @@ export default function DashboardLayout({
   const { t } = useTranslation();
   const router = useRouter();
   const pathname = usePathname();
-  const { isAuthenticated, user, workspace, clearAuth, initAuth } =
+  const { isAuthenticated, user, workspace, clearAuth, setAuth, accessToken, refreshToken } =
     useAuthStore();
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Initialize sidebar state from localStorage on mount
+  useEffect(() => {
+    setIsMounted(true);
+    const savedSidebarState = localStorage.getItem('sidebarOpen');
+    if (savedSidebarState !== null) {
+      setSidebarOpen(savedSidebarState === 'true');
+    }
+  }, []);
+
+  // Save sidebar state to localStorage
+  const handleSidebarToggle = () => {
+    const newState = !sidebarOpen;
+    setSidebarOpen(newState);
+    localStorage.setItem('sidebarOpen', String(newState));
+  };
 
   useEffect(() => {
-    initAuth();
+    const initializeAuth = async () => {
+      // Check if we have tokens in localStorage
+      const storedAccessToken = localStorage.getItem('accessToken');
+      const storedRefreshToken = localStorage.getItem('refreshToken');
 
-    // Check if user is authenticated
-    if (!isAuthenticated) {
-      router.push('/login');
-    }
-  }, [isAuthenticated, router, initAuth]);
+      if (!storedAccessToken || !storedRefreshToken) {
+        // No tokens, redirect to login
+        setIsLoading(false);
+        router.push('/login');
+        return;
+      }
+
+      // If we have tokens but no user data, fetch user data
+      if (!user) {
+        try {
+          const userData = await authApi.getCurrentUser();
+          // Get workspace from user's workspaces
+          const userWorkspace = (userData as any).workspaces?.[0]?.workspace;
+          
+          setAuth({
+            user: userData,
+            workspace: userWorkspace,
+            accessToken: storedAccessToken,
+            refreshToken: storedRefreshToken,
+          });
+        } catch (error) {
+          // Token is invalid, clear and redirect
+          clearAuth();
+          router.push('/login');
+        }
+      }
+      
+      setIsLoading(false);
+    };
+
+    initializeAuth();
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -70,7 +118,7 @@ export default function DashboardLayout({
     },
     {
       name: t('analytics.title'),
-      href: '/dashboard',
+      href: '/dashboard/analytics',
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -96,6 +144,42 @@ export default function DashboardLayout({
     return pathname?.startsWith(href);
   };
 
+  if (isLoading || !isMounted) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex">
+        {/* Skeleton Sidebar */}
+        <aside className="w-64 bg-white border-e border-gray-200 fixed h-full start-0">
+          <div className="h-16 flex items-center px-4 border-b border-gray-200">
+            <div className="w-24 h-6 bg-gray-200 rounded animate-pulse"></div>
+          </div>
+          <div className="p-4 space-y-3">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="h-10 bg-gray-100 rounded-lg animate-pulse"></div>
+            ))}
+          </div>
+        </aside>
+        {/* Skeleton Main Content */}
+        <div className="flex-1 ms-64">
+          <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6">
+            <div className="w-32 h-6 bg-gray-200 rounded animate-pulse"></div>
+            <div className="flex items-center gap-4">
+              <div className="w-20 h-8 bg-gray-200 rounded animate-pulse"></div>
+              <div className="w-8 h-8 bg-gray-200 rounded-full animate-pulse"></div>
+            </div>
+          </header>
+          <main className="p-6">
+            <div className="flex items-center justify-center h-64">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                <p className="text-gray-600">{t('common.loading')}</p>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    );
+  }
+
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -105,180 +189,141 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 flex">
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 start-0 z-30 bg-white border-e border-gray-200 transition-all duration-300 ${
-          sidebarOpen ? 'w-64' : 'w-20'
-        }`}
+        className={`${
+          sidebarOpen ? 'w-64' : 'w-16'
+        } bg-white border-e border-gray-200 fixed h-full transition-all duration-300 z-30 start-0`}
       >
         {/* Logo */}
         <div className="h-16 flex items-center justify-between px-4 border-b border-gray-200">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">S</span>
-            </div>
-            {sidebarOpen && (
-              <span className="font-bold text-gray-900 text-lg">SmartSell</span>
-            )}
-          </div>
+          {sidebarOpen && (
+            <span className="text-xl font-bold text-blue-600">StoreAR</span>
+          )}
           <button
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+            onClick={handleSidebarToggle}
+            className="p-2 rounded-lg hover:bg-gray-100"
           >
             <svg
-              className={`w-5 h-5 text-gray-500 transition-transform ${
-                sidebarOpen ? '' : 'rotate-180'
-              }`}
+              className="w-5 h-5 text-gray-600"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+              {sidebarOpen ? (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M11 19l-7-7 7-7m8 14l-7-7 7-7"
+                />
+              ) : (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              )}
             </svg>
           </button>
         </div>
 
-        {/* Workspace */}
-        {sidebarOpen && (
-          <div className="px-4 py-3 border-b border-gray-100">
-            <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">
-              {t('dashboard.workspace')}
-            </p>
-            <p className="text-sm font-medium text-gray-900 mt-1 truncate">
-              {workspace?.name || 'Workspace'}
-            </p>
-          </div>
-        )}
-
         {/* Navigation */}
-        <nav className="p-4 space-y-1">
+        <nav className="p-4 space-y-2">
           {menuItems.map((item) => (
-            <button
+            <a
               key={item.href}
-              onClick={() => router.push(item.href)}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${
+              href={item.href}
+              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition ${
                 isActive(item.href)
                   ? 'bg-blue-50 text-blue-600'
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  : 'text-gray-700 hover:bg-gray-100'
               }`}
             >
               {item.icon}
-              {sidebarOpen && (
-                <span className="font-medium text-sm">{item.name}</span>
-              )}
-            </button>
+              {sidebarOpen && <span>{item.name}</span>}
+            </a>
           ))}
         </nav>
       </aside>
 
-      {/* Main Content Area */}
+      {/* Main Content */}
       <div
-        className={`transition-all duration-300 ${
-          sidebarOpen ? 'ms-64' : 'ms-20'
-        }`}
+        className={`flex-1 ${sidebarOpen ? 'ms-64' : 'ms-16'} transition-all duration-300`}
       >
         {/* Top Navigation */}
-        <nav className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6">
-          {/* Left side - empty or breadcrumb */}
-          <div></div>
+        <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 sticky top-0 z-20">
+          <div className="flex items-center gap-4">
+            <h1 className="text-lg font-semibold text-gray-900">
+              {workspace?.name || 'Dashboard'}
+            </h1>
+          </div>
 
-          {/* Right Side */}
           <div className="flex items-center gap-4">
             <LanguageSwitcher />
-            
+
             {/* Profile Dropdown */}
             <div className="relative">
               <button
                 onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-                className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors"
+                className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 transition"
               >
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-medium text-sm">
-                    {user?.name?.charAt(0).toUpperCase() || 'U'}
-                  </span>
+                <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-medium">
+                  {user?.name?.charAt(0).toUpperCase() || 'U'}
                 </div>
-                <div className="text-start hidden sm:block">
-                  <p className="text-sm font-medium text-gray-900">{user?.name}</p>
-                  <p className="text-xs text-gray-500">{user?.email}</p>
-                </div>
+                {sidebarOpen && (
+                  <span className="text-sm text-gray-700">{user?.name}</span>
+                )}
                 <svg
-                  className={`w-4 h-4 text-gray-400 transition-transform ${
-                    profileDropdownOpen ? 'rotate-180' : ''
-                  }`}
+                  className="w-4 h-4 text-gray-500"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
 
               {profileDropdownOpen && (
-                <>
-                  <div
-                    className="fixed inset-0 z-10"
-                    onClick={() => setProfileDropdownOpen(false)}
-                  />
-                  <div className="absolute top-full mt-2 end-0 z-20 w-56 bg-white border border-gray-200 rounded-xl shadow-lg py-2">
-                    {/* Profile Info */}
-                    <div className="px-4 py-3 border-b border-gray-100">
-                      <p className="text-sm font-medium text-gray-900">{user?.name}</p>
-                      <p className="text-xs text-gray-500 mt-0.5">{user?.email}</p>
-                    </div>
-
-                    {/* Menu Items */}
-                    <div className="py-1">
-                      <button
-                        onClick={() => {
-                          setProfileDropdownOpen(false);
-                          router.push('/dashboard/settings');
-                        }}
-                        className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                        {t('dashboard.profile') || 'Profile'}
-                      </button>
-                      <button
-                        onClick={() => {
-                          setProfileDropdownOpen(false);
-                          router.push('/dashboard/settings');
-                        }}
-                        className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                        {t('dashboard.settings')}
-                      </button>
-                    </div>
-
-                    {/* Logout */}
-                    <div className="border-t border-gray-100 pt-1">
-                      <button
-                        onClick={() => {
-                          setProfileDropdownOpen(false);
-                          handleLogout();
-                        }}
-                        className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                        </svg>
-                        {t('dashboard.logout')}
-                      </button>
-                    </div>
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2">
+                  <div className="px-4 py-2 border-b border-gray-100">
+                    <p className="text-sm font-medium text-gray-900">
+                      {user?.name}
+                    </p>
+                    <p className="text-xs text-gray-500">{user?.email}</p>
                   </div>
-                </>
+                  <a
+                    href="/dashboard/profile"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                  >
+                    {t('dashboard.profile')}
+                  </a>
+                  <a
+                    href="/dashboard/settings"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                  >
+                    {t('dashboard.settings')}
+                  </a>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                  >
+                    {t('dashboard.logout')}
+                  </button>
+                </div>
               )}
             </div>
           </div>
-        </nav>
+        </header>
 
-        {/* Main Content */}
+        {/* Page Content */}
         <main className="p-6">{children}</main>
       </div>
     </div>
