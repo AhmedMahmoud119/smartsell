@@ -331,12 +331,15 @@ model Product {
   name        String
   slug        String
   description String?
-  shortDescription String?
 
   // Pricing (in primary currency, cents)
   price       Int
   compareAtPrice Int?
   costPrice   Int?
+
+  // Discount
+  discountType  DiscountType?
+  discountValue Int?          // Amount in cents for FIXED, percentage (0-100) for PERCENTAGE
 
   // Multi-currency pricing
   priceMultiCurrency Json?
@@ -411,14 +414,30 @@ enum ProductStatus {
   OUT_OF_STOCK
 }
 
+enum DiscountType {
+  FIXED
+  PERCENTAGE
+}
+
+enum VariantType {
+  COLOR
+  SIZE
+  TEXT
+}
+
 model ProductVariant {
   id          String   @id @default(cuid())
   productId   String
 
   name        String
   sku         String?
-  price       Int?
+  price       Int?     // Price override (optional)
   stock       Int      @default(0)
+
+  // Variant type
+  type        VariantType @default(TEXT)
+  value       String      // "Red", "XL", "Custom text"
+  colorCode   String?     // Hex color for COLOR type (e.g., "#FF0000")
 
   options     Json
 

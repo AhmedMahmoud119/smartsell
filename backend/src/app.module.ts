@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
@@ -10,6 +12,7 @@ import { OrderModule } from './modules/order/order.module';
 import { CustomerModule } from './modules/customer/customer.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { PixelsModule } from './modules/pixels/pixels.module';
+import { UploadModule } from './modules/upload/upload.module';
 
 @Module({
   imports: [
@@ -24,6 +27,12 @@ import { PixelsModule } from './modules/pixels/pixels.module';
       limit: 100, // 100 requests per minute
     }]),
 
+    // Serve uploaded files
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads',
+    }),
+
     // Database
     PrismaModule,
 
@@ -36,6 +45,8 @@ import { PixelsModule } from './modules/pixels/pixels.module';
     CustomerModule,
     AnalyticsModule,
     PixelsModule,
+    UploadModule,
   ],
 })
 export class AppModule {}
+

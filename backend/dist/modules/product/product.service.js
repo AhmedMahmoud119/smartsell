@@ -64,7 +64,6 @@ let ProductService = class ProductService {
                 name: dto.name,
                 slug,
                 description: dto.description,
-                shortDescription: dto.shortDescription,
                 price: dto.price,
                 compareAtPrice: dto.compareAtPrice,
                 costPrice: dto.costPrice,

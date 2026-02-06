@@ -26,15 +26,15 @@ export declare class AnalyticsService {
         storeName: string;
     }[]>;
     getTopCustomers(workspaceId: string, query: AnalyticsQueryDto): Promise<{
-        id: string;
-        name: string;
-        email: string;
-        phone: string;
-        totalOrders: number;
         store: {
-            id: string;
             name: string;
+            id: string;
         };
+        email: string;
+        name: string;
+        phone: string;
+        id: string;
+        totalOrders: number;
         totalSpent: number;
     }[]>;
     getOrdersByStatus(workspaceId: string, storeId?: string): Promise<{
@@ -51,16 +51,16 @@ export declare class AnalyticsService {
         percentage: number;
     }[]>;
     getRecentOrders(workspaceId: string, storeId?: string, limit?: number): Promise<{
-        id: string;
-        status: import(".prisma/client").$Enums.OrderStatus;
-        createdAt: Date;
-        total: number;
         store: {
-            id: string;
             name: string;
+            id: string;
         };
-        orderNumber: string;
+        id: string;
+        createdAt: Date;
+        status: import(".prisma/client").$Enums.OrderStatus;
         customerName: string;
         paymentStatus: import(".prisma/client").$Enums.PaymentStatus;
+        orderNumber: string;
+        total: number;
     }[]>;
 }

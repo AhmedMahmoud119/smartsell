@@ -5,6 +5,8 @@ export declare class PixelsController {
     constructor(pixelsService: PixelsService);
     getPixels(req: any, storeId: string): Promise<{
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         storeId: string;
         facebookPixelId: string | null;
         facebookAccessToken: string | null;
@@ -20,11 +22,11 @@ export declare class PixelsController {
         customHeadScripts: string | null;
         customBodyScripts: string | null;
         enabled: boolean;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     updatePixels(req: any, storeId: string, dto: UpdatePixelsDto): Promise<{
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         storeId: string;
         facebookPixelId: string | null;
         facebookAccessToken: string | null;
@@ -40,8 +42,6 @@ export declare class PixelsController {
         customHeadScripts: string | null;
         customBodyScripts: string | null;
         enabled: boolean;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     testPixel(req: any, storeId: string, pixelType: string): Promise<{
         success: boolean;

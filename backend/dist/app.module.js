@@ -10,6 +10,8 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const throttler_1 = require("@nestjs/throttler");
+const serve_static_1 = require("@nestjs/serve-static");
+const path_1 = require("path");
 const prisma_module_1 = require("./prisma/prisma.module");
 const auth_module_1 = require("./modules/auth/auth.module");
 const user_module_1 = require("./modules/user/user.module");
@@ -19,6 +21,7 @@ const order_module_1 = require("./modules/order/order.module");
 const customer_module_1 = require("./modules/customer/customer.module");
 const analytics_module_1 = require("./modules/analytics/analytics.module");
 const pixels_module_1 = require("./modules/pixels/pixels.module");
+const upload_module_1 = require("./modules/upload/upload.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -32,6 +35,10 @@ exports.AppModule = AppModule = __decorate([
                     ttl: 60000,
                     limit: 100,
                 }]),
+            serve_static_1.ServeStaticModule.forRoot({
+                rootPath: (0, path_1.join)(__dirname, '..', 'uploads'),
+                serveRoot: '/uploads',
+            }),
             prisma_module_1.PrismaModule,
             auth_module_1.AuthModule,
             user_module_1.UserModule,
@@ -41,6 +48,7 @@ exports.AppModule = AppModule = __decorate([
             customer_module_1.CustomerModule,
             analytics_module_1.AnalyticsModule,
             pixels_module_1.PixelsModule,
+            upload_module_1.UploadModule,
         ],
     })
 ], AppModule);

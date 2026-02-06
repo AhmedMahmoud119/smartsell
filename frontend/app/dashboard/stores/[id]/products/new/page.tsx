@@ -6,6 +6,23 @@ import { useParams, useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 import { productApi } from '@/lib/api/product';
 import { storeApi } from '@/lib/api/store';
+import { ImageUpload } from '@/components/ImageUpload';
+import { DiscountEditor } from '@/components/DiscountEditor';
+import { VariantEditor } from '@/components/VariantEditor';
+
+type DiscountType = 'FIXED' | 'PERCENTAGE' | null;
+type VariantType = 'COLOR' | 'SIZE' | 'TEXT';
+
+interface ProductVariant {
+  id?: string;
+  name: string;
+  type: VariantType;
+  value: string;
+  colorCode?: string;
+  price?: number;
+  stock: number;
+  image?: string;
+}
 
 export default function NewProductPage() {
   const { t } = useTranslation();
@@ -17,7 +34,6 @@ export default function NewProductPage() {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    shortDescription: '',
     price: '',
     compareAtPrice: '',
     costPrice: '',
@@ -26,9 +42,10 @@ export default function NewProductPage() {
     stock: '',
     images: [] as string[],
     video: '',
+    discountType: null as DiscountType,
+    discountValue: 0,
+    variants: [] as ProductVariant[],
   });
-
-  const [imageUrl, setImageUrl] = useState('');
 
   // Fetch store
   const { data: store } = useQuery({
@@ -49,40 +66,31 @@ export default function NewProductPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Calculate price in cents
+    const priceInCents = Math.round(parseFloat(formData.price) * 100);
+
     const data = {
       storeId,
       name: formData.name,
       description: formData.description || undefined,
-      shortDescription: formData.shortDescription || undefined,
-      price: parseFloat(formData.price),
-      compareAtPrice: formData.compareAtPrice ? parseFloat(formData.compareAtPrice) : undefined,
-      costPrice: formData.costPrice ? parseFloat(formData.costPrice) : undefined,
+      price: priceInCents,
+      compareAtPrice: formData.compareAtPrice ? Math.round(parseFloat(formData.compareAtPrice) * 100) : undefined,
+      costPrice: formData.costPrice ? Math.round(parseFloat(formData.costPrice) * 100) : undefined,
+      discountType: formData.discountType || undefined,
+      discountValue: formData.discountType ? formData.discountValue : undefined,
       sku: formData.sku || undefined,
       trackInventory: formData.trackInventory,
       stock: formData.stock ? parseInt(formData.stock) : 0,
       images: formData.images.length > 0 ? formData.images : undefined,
       video: formData.video || undefined,
+      // Variants will be handled separately by a variants endpoint
     };
 
     await createMutation.mutateAsync(data);
   };
 
-  const handleAddImage = () => {
-    if (imageUrl.trim()) {
-      setFormData((prev) => ({
-        ...prev,
-        images: [...prev.images, imageUrl.trim()],
-      }));
-      setImageUrl('');
-    }
-  };
-
-  const handleRemoveImage = (index: number) => {
-    setFormData((prev) => ({
-      ...prev,
-      images: prev.images.filter((_, i) => i !== index),
-    }));
-  };
+  // Calculate price in cents for DiscountEditor
+  const priceInCents = formData.price ? Math.round(parseFloat(formData.price) * 100) : 0;
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
@@ -148,187 +156,27 @@ export default function NewProductPage() {
                 placeholder={t('stores.description')}
               />
             </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Short Description
-              </label>
-              <textarea
-                value={formData.shortDescription}
-                onChange={(e) => setFormData({ ...formData, shortDescription: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                rows={2}
-                placeholder="Brief description for product cards"
-              />
-            </div>
           </div>
         </div>
 
-        {/* Pricing */}
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            {t('products.pricing')}
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t('products.price')} * ({store?.currency || 'USD'})
-              </label>
-              <input
-                type="number"
-                required
-                min="0"
-                step="0.01"
-                value={formData.price}
-                onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="0.00"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t('products.compareAtPrice')} ({store?.currency || 'USD'})
-              </label>
-              <input
-                type="number"
-                min="0"
-                step="0.01"
-                value={formData.compareAtPrice}
-                onChange={(e) => setFormData({ ...formData, compareAtPrice: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="0.00"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t('products.costPrice')} ({store?.currency || 'USD'})
-              </label>
-              <input
-                type="number"
-                min="0"
-                step="0.01"
-                value={formData.costPrice}
-                onChange={(e) => setFormData({ ...formData, costPrice: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="0.00"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Inventory */}
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            {t('products.inventory')}
-          </h2>
-
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t('products.sku')}
-                </label>
-                <input
-                  type="text"
-                  value={formData.sku}
-                  onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="SKU-001"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t('products.stock')}
-                </label>
-                <input
-                  type="number"
-                  min="0"
-                  value={formData.stock}
-                  onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="0"
-                  disabled={!formData.trackInventory}
-                />
-              </div>
-            </div>
-
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="trackInventory"
-                checked={formData.trackInventory}
-                onChange={(e) => setFormData({ ...formData, trackInventory: e.target.checked })}
-                className="w-4 h-4 text-blue-600 rounded"
-              />
-              <label htmlFor="trackInventory" className="ms-2 text-sm text-gray-700">
-                {t('products.trackInventory')}
-              </label>
-            </div>
-          </div>
-        </div>
-
-        {/* Media */}
+        {/* Media - Image Upload */}
         <div className="bg-white rounded-lg shadow p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
             {t('products.media')}
           </h2>
 
           <div className="space-y-4">
-            {/* Images */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 {t('products.images')}
               </label>
-
-              {formData.images.length > 0 && (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-                  {formData.images.map((img, index) => (
-                    <div key={index} className="relative group">
-                      <img
-                        src={img}
-                        alt={`Product ${index + 1}`}
-                        className="w-full h-32 object-cover rounded-lg"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveImage(index)}
-                        className="absolute top-2 end-2 p-1 bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition"
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              <div className="flex gap-2">
-                <input
-                  type="url"
-                  value={imageUrl}
-                  onChange={(e) => setImageUrl(e.target.value)}
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="https://example.com/image.jpg"
-                />
-                <button
-                  type="button"
-                  onClick={handleAddImage}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                >
-                  Add
-                </button>
-              </div>
-              <p className="text-xs text-gray-500 mt-1">
-                Add image URLs (upload functionality coming soon)
-              </p>
+              <ImageUpload
+                images={formData.images}
+                onImagesChange={(images) => setFormData({ ...formData, images })}
+                maxImages={10}
+              />
             </div>
 
-            {/* Video */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 {t('products.video')} URL
@@ -343,6 +191,150 @@ export default function NewProductPage() {
             </div>
           </div>
         </div>
+
+        {/* Pricing */}
+        <div className="bg-white rounded-lg shadow p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            {t('products.pricing')}
+          </h2>
+
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {t('products.price')} * ({store?.currency || 'SAR'})
+                </label>
+                <input
+                  type="number"
+                  required
+                  min="0"
+                  step="0.01"
+                  value={formData.price}
+                  onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="0.00"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {t('products.compareAtPrice')} ({store?.currency || 'SAR'})
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={formData.compareAtPrice}
+                  onChange={(e) => setFormData({ ...formData, compareAtPrice: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="0.00"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {t('products.costPrice')} ({store?.currency || 'SAR'})
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={formData.costPrice}
+                  onChange={(e) => setFormData({ ...formData, costPrice: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="0.00"
+                />
+              </div>
+            </div>
+
+            {/* Discount Section */}
+            <DiscountEditor
+              price={priceInCents}
+              discountType={formData.discountType}
+              discountValue={formData.discountValue}
+              onDiscountTypeChange={(type) => setFormData({ ...formData, discountType: type })}
+              onDiscountValueChange={(value) => setFormData({ ...formData, discountValue: value })}
+              currency={store?.currency || 'SAR'}
+            />
+          </div>
+        </div>
+
+        {/* Variants */}
+        <div className="bg-white rounded-lg shadow p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            {t('products.variants')}
+          </h2>
+
+          <VariantEditor
+            variants={formData.variants}
+            onVariantsChange={(variants) => setFormData({ ...formData, variants })}
+            basePrice={priceInCents}
+          />
+        </div>
+
+        {/* Inventory (only if no variants) */}
+        {formData.variants.length === 0 && (
+          <div className="bg-white rounded-lg shadow p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              {t('products.inventory')}
+            </h2>
+
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    {t('products.sku')}
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.sku}
+                    onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="SKU-001"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    {t('products.stock')}
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={formData.stock}
+                    onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="0"
+                    disabled={!formData.trackInventory}
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="trackInventory"
+                  checked={formData.trackInventory}
+                  onChange={(e) => setFormData({ ...formData, trackInventory: e.target.checked })}
+                  className="w-4 h-4 text-blue-600 rounded"
+                />
+                <label htmlFor="trackInventory" className="ms-2 text-sm text-gray-700">
+                  {t('products.trackInventory')}
+                </label>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Info when variants are used */}
+        {formData.variants.length > 0 && (
+          <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+            <p className="text-sm text-blue-800">
+              💡 {t('products.totalStock')}: <strong>{formData.variants.reduce((sum, v) => sum + v.stock, 0)}</strong> —
+              {' '} Stock is managed per variant when variants are added.
+            </p>
+          </div>
+        )}
 
         {/* Actions */}
         <div className="flex gap-3">

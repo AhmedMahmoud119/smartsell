@@ -25,7 +25,6 @@ export declare class OrderService {
                 metaDescription: string | null;
                 publishedAt: Date | null;
                 storeId: string;
-                shortDescription: string | null;
                 compareAtPrice: number | null;
                 costPrice: number | null;
                 sku: string | null;
@@ -33,6 +32,8 @@ export declare class OrderService {
                 stock: number;
                 images: import("@prisma/client/runtime/library").JsonValue;
                 video: string | null;
+                discountType: import(".prisma/client").$Enums.DiscountType | null;
+                discountValue: number | null;
                 priceMultiCurrency: import("@prisma/client/runtime/library").JsonValue | null;
                 barcode: string | null;
                 lowStockThreshold: number;
@@ -253,7 +254,6 @@ export declare class OrderService {
                 metaDescription: string | null;
                 publishedAt: Date | null;
                 storeId: string;
-                shortDescription: string | null;
                 compareAtPrice: number | null;
                 costPrice: number | null;
                 sku: string | null;
@@ -261,6 +261,8 @@ export declare class OrderService {
                 stock: number;
                 images: import("@prisma/client/runtime/library").JsonValue;
                 video: string | null;
+                discountType: import(".prisma/client").$Enums.DiscountType | null;
+                discountValue: number | null;
                 priceMultiCurrency: import("@prisma/client/runtime/library").JsonValue | null;
                 barcode: string | null;
                 lowStockThreshold: number;

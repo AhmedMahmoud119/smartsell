@@ -5,6 +5,8 @@ export declare class PixelsService {
     constructor(prisma: PrismaService);
     getPixels(storeId: string, workspaceId: string): Promise<{
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         storeId: string;
         facebookPixelId: string | null;
         facebookAccessToken: string | null;
@@ -20,11 +22,11 @@ export declare class PixelsService {
         customHeadScripts: string | null;
         customBodyScripts: string | null;
         enabled: boolean;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     updatePixels(storeId: string, workspaceId: string, dto: UpdatePixelsDto): Promise<{
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         storeId: string;
         facebookPixelId: string | null;
         facebookAccessToken: string | null;
@@ -40,8 +42,6 @@ export declare class PixelsService {
         customHeadScripts: string | null;
         customBodyScripts: string | null;
         enabled: boolean;
-        createdAt: Date;
-        updatedAt: Date;
     }>;
     testPixel(storeId: string, workspaceId: string, pixelType: string): Promise<{
         success: boolean;

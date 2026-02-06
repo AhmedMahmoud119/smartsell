@@ -1,4 +1,5 @@
-import { IsString, IsNotEmpty, IsNumber, IsOptional, IsBoolean, IsArray, Min, MaxLength } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsOptional, IsBoolean, IsArray, IsEnum, Min, Max, MaxLength } from 'class-validator';
+import { DiscountType } from '@prisma/client';
 
 export class CreateProductDto {
   @IsString()
@@ -14,10 +15,6 @@ export class CreateProductDto {
   @IsOptional()
   description?: string;
 
-  @IsString()
-  @IsOptional()
-  shortDescription?: string;
-
   @IsNumber()
   @Min(0)
   price: number;
@@ -31,6 +28,17 @@ export class CreateProductDto {
   @IsOptional()
   @Min(0)
   costPrice?: number;
+
+  // Discount fields
+  @IsEnum(DiscountType)
+  @IsOptional()
+  discountType?: DiscountType;
+
+  @IsNumber()
+  @IsOptional()
+  @Min(0)
+  @Max(100) // Max 100% for percentage, or a large fixed amount
+  discountValue?: number;
 
   @IsString()
   @IsOptional()
@@ -53,3 +61,4 @@ export class CreateProductDto {
   @IsOptional()
   video?: string;
 }
+

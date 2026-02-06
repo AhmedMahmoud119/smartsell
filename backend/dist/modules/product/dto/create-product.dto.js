@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateProductDto = void 0;
 const class_validator_1 = require("class-validator");
+const client_1 = require("@prisma/client");
 class CreateProductDto {
 }
 exports.CreateProductDto = CreateProductDto;
@@ -31,11 +32,6 @@ __decorate([
     __metadata("design:type", String)
 ], CreateProductDto.prototype, "description", void 0);
 __decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], CreateProductDto.prototype, "shortDescription", void 0);
-__decorate([
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.Min)(0),
     __metadata("design:type", Number)
@@ -52,6 +48,18 @@ __decorate([
     (0, class_validator_1.Min)(0),
     __metadata("design:type", Number)
 ], CreateProductDto.prototype, "costPrice", void 0);
+__decorate([
+    (0, class_validator_1.IsEnum)(client_1.DiscountType),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateProductDto.prototype, "discountType", void 0);
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.Min)(0),
+    (0, class_validator_1.Max)(100),
+    __metadata("design:type", Number)
+], CreateProductDto.prototype, "discountValue", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
