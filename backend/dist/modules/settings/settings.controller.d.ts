@@ -7,8 +7,8 @@ export declare class SettingsController {
     constructor(settingsService: SettingsService);
     getAllCurrencies(req: any): Promise<{
         symbol: string;
-        name: string;
         id: string;
+        name: string;
         createdAt: Date;
         updatedAt: Date;
         workspaceId: string;
@@ -18,8 +18,8 @@ export declare class SettingsController {
     }[]>;
     createCurrency(req: any, dto: CreateCurrencyDto): Promise<{
         symbol: string;
-        name: string;
         id: string;
+        name: string;
         createdAt: Date;
         updatedAt: Date;
         workspaceId: string;
@@ -29,8 +29,8 @@ export declare class SettingsController {
     }>;
     updateCurrency(req: any, currencyId: string, dto: UpdateCurrencyDto): Promise<{
         symbol: string;
-        name: string;
         id: string;
+        name: string;
         createdAt: Date;
         updatedAt: Date;
         workspaceId: string;
@@ -49,8 +49,8 @@ export declare class SettingsController {
         ratesUpdatedAt: Date;
         availableCurrencies: {
             symbol: string;
-            name: string;
             id: string;
+            name: string;
             createdAt: Date;
             updatedAt: Date;
             workspaceId: string;
@@ -67,8 +67,8 @@ export declare class SettingsController {
         ratesUpdatedAt: Date;
         availableCurrencies: {
             symbol: string;
-            name: string;
             id: string;
+            name: string;
             createdAt: Date;
             updatedAt: Date;
             workspaceId: string;

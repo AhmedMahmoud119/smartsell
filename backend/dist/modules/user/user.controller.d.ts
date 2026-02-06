@@ -14,19 +14,19 @@ export declare class UserController {
                 slug: string;
             };
         }[];
+        id: string;
         email: string;
         name: string;
         phone: string;
         locale: string;
-        id: string;
         emailVerified: boolean;
         createdAt: Date;
     }>;
     updateProfile(user: any, data: UpdateProfileDto): Promise<{
+        id: string;
         email: string;
         name: string;
         phone: string;
         locale: string;
-        id: string;
     }>;
 }

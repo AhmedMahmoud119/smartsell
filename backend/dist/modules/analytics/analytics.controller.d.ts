@@ -27,13 +27,13 @@ export declare class AnalyticsController {
     }[]>;
     getTopCustomers(req: any, query: AnalyticsQueryDto): Promise<{
         store: {
-            name: string;
             id: string;
+            name: string;
         };
+        id: string;
         email: string;
         name: string;
         phone: string;
-        id: string;
         totalOrders: number;
         totalSpent: number;
     }[]>;
@@ -52,8 +52,8 @@ export declare class AnalyticsController {
     }[]>;
     getRecentOrders(req: any, storeId?: string, limit?: string): Promise<{
         store: {
-            name: string;
             id: string;
+            name: string;
         };
         id: string;
         createdAt: Date;

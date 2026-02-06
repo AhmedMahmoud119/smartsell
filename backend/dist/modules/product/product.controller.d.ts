@@ -5,8 +5,8 @@ export declare class ProductController {
     private productService;
     constructor(productService: ProductService);
     create(req: any, createProductDto: CreateProductDto): Promise<{
-        name: string;
         id: string;
+        name: string;
         createdAt: Date;
         updatedAt: Date;
         slug: string;
@@ -47,13 +47,13 @@ export declare class ProductController {
     }>;
     findAll(req: any, storeId?: string, status?: string): Promise<({
         store: {
-            name: string;
             id: string;
+            name: string;
             slug: string;
         };
     } & {
-        name: string;
         id: string;
+        name: string;
         createdAt: Date;
         updatedAt: Date;
         slug: string;
@@ -94,13 +94,13 @@ export declare class ProductController {
     })[]>;
     findOne(req: any, id: string): Promise<{
         store: {
-            name: string;
             id: string;
+            name: string;
             slug: string;
         };
     } & {
-        name: string;
         id: string;
+        name: string;
         createdAt: Date;
         updatedAt: Date;
         slug: string;
@@ -141,13 +141,13 @@ export declare class ProductController {
     }>;
     update(req: any, id: string, updateProductDto: UpdateProductDto): Promise<{
         store: {
-            name: string;
             id: string;
+            name: string;
             slug: string;
         };
     } & {
-        name: string;
         id: string;
+        name: string;
         createdAt: Date;
         updatedAt: Date;
         slug: string;

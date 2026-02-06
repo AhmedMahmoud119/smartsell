@@ -6,14 +6,14 @@ export declare class CustomerService {
     constructor(prisma: PrismaService);
     create(workspaceId: string, dto: CreateCustomerDto): Promise<{
         store: {
-            name: string;
             id: string;
+            name: string;
         };
     } & {
+        id: string;
         email: string | null;
         name: string;
         phone: string;
-        id: string;
         createdAt: Date;
         updatedAt: Date;
         state: string | null;
@@ -24,22 +24,22 @@ export declare class CustomerService {
         city: string | null;
         zipCode: string | null;
         country: string;
-        acceptsMarketing: boolean;
         totalSpent: number;
+        acceptsMarketing: boolean;
     }>;
     findAll(workspaceId: string, storeId?: string): Promise<({
         store: {
-            name: string;
             id: string;
+            name: string;
         };
         _count: {
             orders: number;
         };
     } & {
+        id: string;
         email: string | null;
         name: string;
         phone: string;
-        id: string;
         createdAt: Date;
         updatedAt: Date;
         state: string | null;
@@ -50,13 +50,13 @@ export declare class CustomerService {
         city: string | null;
         zipCode: string | null;
         country: string;
-        acceptsMarketing: boolean;
         totalSpent: number;
+        acceptsMarketing: boolean;
     })[]>;
     findOne(workspaceId: string, id: string): Promise<{
         store: {
-            name: string;
             id: string;
+            name: string;
         };
         orders: {
             id: string;
@@ -66,10 +66,10 @@ export declare class CustomerService {
             total: number;
         }[];
     } & {
+        id: string;
         email: string | null;
         name: string;
         phone: string;
-        id: string;
         createdAt: Date;
         updatedAt: Date;
         state: string | null;
@@ -80,19 +80,19 @@ export declare class CustomerService {
         city: string | null;
         zipCode: string | null;
         country: string;
-        acceptsMarketing: boolean;
         totalSpent: number;
+        acceptsMarketing: boolean;
     }>;
     update(workspaceId: string, id: string, dto: UpdateCustomerDto): Promise<{
         store: {
-            name: string;
             id: string;
+            name: string;
         };
     } & {
+        id: string;
         email: string | null;
         name: string;
         phone: string;
-        id: string;
         createdAt: Date;
         updatedAt: Date;
         state: string | null;
@@ -103,14 +103,14 @@ export declare class CustomerService {
         city: string | null;
         zipCode: string | null;
         country: string;
-        acceptsMarketing: boolean;
         totalSpent: number;
+        acceptsMarketing: boolean;
     }>;
     remove(workspaceId: string, id: string): Promise<{
+        id: string;
         email: string | null;
         name: string;
         phone: string;
-        id: string;
         createdAt: Date;
         updatedAt: Date;
         state: string | null;
@@ -121,14 +121,14 @@ export declare class CustomerService {
         city: string | null;
         zipCode: string | null;
         country: string;
-        acceptsMarketing: boolean;
         totalSpent: number;
+        acceptsMarketing: boolean;
     }>;
     findByPhone(workspaceId: string, storeId: string, phone: string): Promise<{
+        id: string;
         email: string | null;
         name: string;
         phone: string;
-        id: string;
         createdAt: Date;
         updatedAt: Date;
         state: string | null;
@@ -139,7 +139,7 @@ export declare class CustomerService {
         city: string | null;
         zipCode: string | null;
         country: string;
-        acceptsMarketing: boolean;
         totalSpent: number;
+        acceptsMarketing: boolean;
     }>;
 }

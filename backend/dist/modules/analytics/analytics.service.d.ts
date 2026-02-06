@@ -27,13 +27,13 @@ export declare class AnalyticsService {
     }[]>;
     getTopCustomers(workspaceId: string, query: AnalyticsQueryDto): Promise<{
         store: {
-            name: string;
             id: string;
+            name: string;
         };
+        id: string;
         email: string;
         name: string;
         phone: string;
-        id: string;
         totalOrders: number;
         totalSpent: number;
     }[]>;
@@ -52,8 +52,8 @@ export declare class AnalyticsService {
     }[]>;
     getRecentOrders(workspaceId: string, storeId?: string, limit?: number): Promise<{
         store: {
-            name: string;
             id: string;
+            name: string;
         };
         id: string;
         createdAt: Date;

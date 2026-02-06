@@ -6,8 +6,8 @@ export declare class ProductService {
     constructor(prisma: PrismaService);
     private generateSlug;
     create(userId: string, workspaceId: string, dto: CreateProductDto): Promise<{
-        name: string;
         id: string;
+        name: string;
         createdAt: Date;
         updatedAt: Date;
         slug: string;
@@ -48,13 +48,13 @@ export declare class ProductService {
     }>;
     findAll(userId: string, workspaceId: string, storeId?: string, status?: string): Promise<({
         store: {
-            name: string;
             id: string;
+            name: string;
             slug: string;
         };
     } & {
-        name: string;
         id: string;
+        name: string;
         createdAt: Date;
         updatedAt: Date;
         slug: string;
@@ -95,13 +95,13 @@ export declare class ProductService {
     })[]>;
     findOne(userId: string, workspaceId: string, productId: string): Promise<{
         store: {
-            name: string;
             id: string;
+            name: string;
             slug: string;
         };
     } & {
-        name: string;
         id: string;
+        name: string;
         createdAt: Date;
         updatedAt: Date;
         slug: string;
@@ -142,13 +142,13 @@ export declare class ProductService {
     }>;
     update(userId: string, workspaceId: string, productId: string, dto: UpdateProductDto): Promise<{
         store: {
-            name: string;
             id: string;
+            name: string;
             slug: string;
         };
     } & {
-        name: string;
         id: string;
+        name: string;
         createdAt: Date;
         updatedAt: Date;
         slug: string;

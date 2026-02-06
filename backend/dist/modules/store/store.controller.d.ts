@@ -8,8 +8,8 @@ export declare class StoreController {
         workspace: {
             plan: {
                 currency: string;
-                name: string;
                 id: string;
+                name: string;
                 createdAt: Date;
                 updatedAt: Date;
                 slug: string;
@@ -28,8 +28,8 @@ export declare class StoreController {
                 active: boolean;
             };
         } & {
-            name: string;
             id: string;
+            name: string;
             createdAt: Date;
             updatedAt: Date;
             slug: string;
@@ -37,10 +37,10 @@ export declare class StoreController {
         };
     } & {
         currency: string;
+        id: string;
         email: string | null;
         name: string;
         phone: string | null;
-        id: string;
         createdAt: Date;
         updatedAt: Date;
         slug: string;
@@ -48,11 +48,11 @@ export declare class StoreController {
         workspaceId: string;
         status: import(".prisma/client").$Enums.StoreStatus;
         description: string | null;
-        language: string;
         logo: string | null;
         favicon: string | null;
         whatsapp: string | null;
         address: string | null;
+        language: string;
         shippingPolicy: string | null;
         returnPolicy: string | null;
         privacyPolicy: string | null;
@@ -79,10 +79,10 @@ export declare class StoreController {
         };
     } & {
         currency: string;
+        id: string;
         email: string | null;
         name: string;
         phone: string | null;
-        id: string;
         createdAt: Date;
         updatedAt: Date;
         slug: string;
@@ -90,11 +90,11 @@ export declare class StoreController {
         workspaceId: string;
         status: import(".prisma/client").$Enums.StoreStatus;
         description: string | null;
-        language: string;
         logo: string | null;
         favicon: string | null;
         whatsapp: string | null;
         address: string | null;
+        language: string;
         shippingPolicy: string | null;
         returnPolicy: string | null;
         privacyPolicy: string | null;
@@ -128,10 +128,10 @@ export declare class StoreController {
         };
     } & {
         currency: string;
+        id: string;
         email: string | null;
         name: string;
         phone: string | null;
-        id: string;
         createdAt: Date;
         updatedAt: Date;
         slug: string;
@@ -139,11 +139,11 @@ export declare class StoreController {
         workspaceId: string;
         status: import(".prisma/client").$Enums.StoreStatus;
         description: string | null;
-        language: string;
         logo: string | null;
         favicon: string | null;
         whatsapp: string | null;
         address: string | null;
+        language: string;
         shippingPolicy: string | null;
         returnPolicy: string | null;
         privacyPolicy: string | null;
@@ -171,10 +171,10 @@ export declare class StoreController {
         };
     } & {
         currency: string;
+        id: string;
         email: string | null;
         name: string;
         phone: string | null;
-        id: string;
         createdAt: Date;
         updatedAt: Date;
         slug: string;
@@ -182,11 +182,11 @@ export declare class StoreController {
         workspaceId: string;
         status: import(".prisma/client").$Enums.StoreStatus;
         description: string | null;
-        language: string;
         logo: string | null;
         favicon: string | null;
         whatsapp: string | null;
         address: string | null;
+        language: string;
         shippingPolicy: string | null;
         returnPolicy: string | null;
         privacyPolicy: string | null;

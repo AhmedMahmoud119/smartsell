@@ -6,14 +6,14 @@ export declare class OrderController {
     constructor(orderService: OrderService);
     create(req: any, createOrderDto: CreateOrderDto): Promise<{
         store: {
-            name: string;
             id: string;
+            name: string;
             slug: string;
         };
         items: ({
             product: {
-                name: string;
                 id: string;
+                name: string;
                 createdAt: Date;
                 updatedAt: Date;
                 slug: string;
@@ -106,14 +106,14 @@ export declare class OrderController {
     }>;
     findAll(req: any, storeId?: string, status?: string): Promise<({
         store: {
-            name: string;
             id: string;
+            name: string;
             slug: string;
         };
         items: ({
             product: {
-                name: string;
                 id: string;
+                name: string;
                 images: import("@prisma/client/runtime/library").JsonValue;
             };
         } & {
@@ -176,14 +176,14 @@ export declare class OrderController {
     }>;
     findOne(req: any, id: string): Promise<{
         store: {
-            name: string;
             id: string;
+            name: string;
             slug: string;
         };
         items: ({
             product: {
-                name: string;
                 id: string;
+                name: string;
                 slug: string;
                 images: import("@prisma/client/runtime/library").JsonValue;
             };
@@ -241,14 +241,14 @@ export declare class OrderController {
     }>;
     update(req: any, id: string, updateOrderDto: UpdateOrderDto): Promise<{
         store: {
-            name: string;
             id: string;
+            name: string;
             slug: string;
         };
         items: ({
             product: {
-                name: string;
                 id: string;
+                name: string;
                 createdAt: Date;
                 updatedAt: Date;
                 slug: string;

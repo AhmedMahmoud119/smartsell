@@ -21,12 +21,10 @@ export class SettingsService {
   // Create currency
   async createCurrency(userId: string, workspaceId: string, dto: CreateCurrencyDto) {
     // Check if currency code already exists for this workspace
-    const existing = await this.prisma.currency.findUnique({
+    const existing = await this.prisma.currency.findFirst({
       where: {
-        workspaceId_code: {
-          workspaceId,
-          code: dto.code.toUpperCase(),
-        },
+        workspaceId,
+        code: dto.code.toUpperCase(),
       },
     });
 

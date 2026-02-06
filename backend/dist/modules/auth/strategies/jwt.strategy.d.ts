@@ -10,16 +10,18 @@ export declare class JwtStrategy extends JwtStrategy_base {
         sub: string;
         email: string;
     }): Promise<{
+        userId: string;
+        workspaceId: string;
         workspaces: ({
             workspace: {
                 plan: {
-                    currency: string;
-                    name: string;
                     id: string;
+                    name: string;
                     createdAt: Date;
                     updatedAt: Date;
                     slug: string;
                     price: number;
+                    currency: string;
                     maxStores: number;
                     maxProductsPerStore: number;
                     maxOrdersPerMonth: number;
@@ -34,8 +36,8 @@ export declare class JwtStrategy extends JwtStrategy_base {
                     active: boolean;
                 };
             } & {
-                name: string;
                 id: string;
+                name: string;
                 createdAt: Date;
                 updatedAt: Date;
                 slug: string;
@@ -48,13 +50,12 @@ export declare class JwtStrategy extends JwtStrategy_base {
             userId: string;
             role: import(".prisma/client").$Enums.Role;
         })[];
-    } & {
+        id: string;
         email: string;
+        passwordHash: string | null;
         name: string;
         phone: string | null;
         locale: string;
-        id: string;
-        passwordHash: string | null;
         emailVerified: boolean;
         verifiedAt: Date | null;
         provider: string | null;

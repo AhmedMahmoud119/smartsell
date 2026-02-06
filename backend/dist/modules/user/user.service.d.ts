@@ -14,19 +14,19 @@ export declare class UserService {
                 slug: string;
             };
         }[];
+        id: string;
         email: string;
         name: string;
         phone: string;
         locale: string;
-        id: string;
         emailVerified: boolean;
         createdAt: Date;
     }>;
     updateProfile(userId: string, data: UpdateProfileDto): Promise<{
+        id: string;
         email: string;
         name: string;
         phone: string;
         locale: string;
-        id: string;
     }>;
 }

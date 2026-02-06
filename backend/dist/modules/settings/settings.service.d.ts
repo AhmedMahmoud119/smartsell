@@ -7,8 +7,8 @@ export declare class SettingsService {
     constructor(prisma: PrismaService);
     getAllCurrencies(userId: string, workspaceId: string): Promise<{
         symbol: string;
-        name: string;
         id: string;
+        name: string;
         createdAt: Date;
         updatedAt: Date;
         workspaceId: string;
@@ -18,8 +18,8 @@ export declare class SettingsService {
     }[]>;
     createCurrency(userId: string, workspaceId: string, dto: CreateCurrencyDto): Promise<{
         symbol: string;
-        name: string;
         id: string;
+        name: string;
         createdAt: Date;
         updatedAt: Date;
         workspaceId: string;
@@ -29,8 +29,8 @@ export declare class SettingsService {
     }>;
     updateCurrency(userId: string, workspaceId: string, currencyId: string, dto: UpdateCurrencyDto): Promise<{
         symbol: string;
-        name: string;
         id: string;
+        name: string;
         createdAt: Date;
         updatedAt: Date;
         workspaceId: string;
@@ -49,8 +49,8 @@ export declare class SettingsService {
         ratesUpdatedAt: Date;
         availableCurrencies: {
             symbol: string;
-            name: string;
             id: string;
+            name: string;
             createdAt: Date;
             updatedAt: Date;
             workspaceId: string;
@@ -67,8 +67,8 @@ export declare class SettingsService {
         ratesUpdatedAt: Date;
         availableCurrencies: {
             symbol: string;
-            name: string;
             id: string;
+            name: string;
             createdAt: Date;
             updatedAt: Date;
             workspaceId: string;

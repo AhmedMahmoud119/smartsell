@@ -7,14 +7,14 @@ export declare class OrderService {
     private generateOrderNumber;
     create(userId: string, workspaceId: string, dto: CreateOrderDto): Promise<{
         store: {
-            name: string;
             id: string;
+            name: string;
             slug: string;
         };
         items: ({
             product: {
-                name: string;
                 id: string;
+                name: string;
                 createdAt: Date;
                 updatedAt: Date;
                 slug: string;
@@ -107,14 +107,14 @@ export declare class OrderService {
     }>;
     findAll(userId: string, workspaceId: string, storeId?: string, status?: string): Promise<({
         store: {
-            name: string;
             id: string;
+            name: string;
             slug: string;
         };
         items: ({
             product: {
-                name: string;
                 id: string;
+                name: string;
                 images: import("@prisma/client/runtime/library").JsonValue;
             };
         } & {
@@ -171,14 +171,14 @@ export declare class OrderService {
     })[]>;
     findOne(userId: string, workspaceId: string, orderId: string): Promise<{
         store: {
-            name: string;
             id: string;
+            name: string;
             slug: string;
         };
         items: ({
             product: {
-                name: string;
                 id: string;
+                name: string;
                 slug: string;
                 images: import("@prisma/client/runtime/library").JsonValue;
             };
@@ -236,14 +236,14 @@ export declare class OrderService {
     }>;
     update(userId: string, workspaceId: string, orderId: string, dto: UpdateOrderDto): Promise<{
         store: {
-            name: string;
             id: string;
+            name: string;
             slug: string;
         };
         items: ({
             product: {
-                name: string;
                 id: string;
+                name: string;
                 createdAt: Date;
                 updatedAt: Date;
                 slug: string;

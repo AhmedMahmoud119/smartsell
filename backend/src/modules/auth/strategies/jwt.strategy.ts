@@ -37,6 +37,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException('User not found');
     }
 
-    return user;
+    // Extract the first workspace ID for convenience
+    const workspaceId = user.workspaces[0]?.workspaceId || null;
+
+    return {
+      ...user,
+      userId: user.id,
+      workspaceId,
+    };
   }
 }

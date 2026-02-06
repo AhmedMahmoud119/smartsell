@@ -6,14 +6,14 @@ export declare class CustomerController {
     constructor(customerService: CustomerService);
     create(req: any, createCustomerDto: CreateCustomerDto): Promise<{
         store: {
-            name: string;
             id: string;
+            name: string;
         };
     } & {
+        id: string;
         email: string | null;
         name: string;
         phone: string;
-        id: string;
         createdAt: Date;
         updatedAt: Date;
         state: string | null;
@@ -24,22 +24,22 @@ export declare class CustomerController {
         city: string | null;
         zipCode: string | null;
         country: string;
-        acceptsMarketing: boolean;
         totalSpent: number;
+        acceptsMarketing: boolean;
     }>;
     findAll(req: any, storeId?: string): Promise<({
         store: {
-            name: string;
             id: string;
+            name: string;
         };
         _count: {
             orders: number;
         };
     } & {
+        id: string;
         email: string | null;
         name: string;
         phone: string;
-        id: string;
         createdAt: Date;
         updatedAt: Date;
         state: string | null;
@@ -50,14 +50,14 @@ export declare class CustomerController {
         city: string | null;
         zipCode: string | null;
         country: string;
-        acceptsMarketing: boolean;
         totalSpent: number;
+        acceptsMarketing: boolean;
     })[]>;
     findByPhone(req: any, storeId: string, phone: string): Promise<{
+        id: string;
         email: string | null;
         name: string;
         phone: string;
-        id: string;
         createdAt: Date;
         updatedAt: Date;
         state: string | null;
@@ -68,13 +68,13 @@ export declare class CustomerController {
         city: string | null;
         zipCode: string | null;
         country: string;
-        acceptsMarketing: boolean;
         totalSpent: number;
+        acceptsMarketing: boolean;
     }>;
     findOne(req: any, id: string): Promise<{
         store: {
-            name: string;
             id: string;
+            name: string;
         };
         orders: {
             id: string;
@@ -84,10 +84,10 @@ export declare class CustomerController {
             total: number;
         }[];
     } & {
+        id: string;
         email: string | null;
         name: string;
         phone: string;
-        id: string;
         createdAt: Date;
         updatedAt: Date;
         state: string | null;
@@ -98,19 +98,19 @@ export declare class CustomerController {
         city: string | null;
         zipCode: string | null;
         country: string;
-        acceptsMarketing: boolean;
         totalSpent: number;
+        acceptsMarketing: boolean;
     }>;
     update(req: any, id: string, updateCustomerDto: UpdateCustomerDto): Promise<{
         store: {
-            name: string;
             id: string;
+            name: string;
         };
     } & {
+        id: string;
         email: string | null;
         name: string;
         phone: string;
-        id: string;
         createdAt: Date;
         updatedAt: Date;
         state: string | null;
@@ -121,14 +121,14 @@ export declare class CustomerController {
         city: string | null;
         zipCode: string | null;
         country: string;
-        acceptsMarketing: boolean;
         totalSpent: number;
+        acceptsMarketing: boolean;
     }>;
     remove(req: any, id: string): Promise<{
+        id: string;
         email: string | null;
         name: string;
         phone: string;
-        id: string;
         createdAt: Date;
         updatedAt: Date;
         state: string | null;
@@ -139,7 +139,7 @@ export declare class CustomerController {
         city: string | null;
         zipCode: string | null;
         country: string;
-        acceptsMarketing: boolean;
         totalSpent: number;
+        acceptsMarketing: boolean;
     }>;
 }

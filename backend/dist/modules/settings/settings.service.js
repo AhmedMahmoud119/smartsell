@@ -23,12 +23,10 @@ let SettingsService = class SettingsService {
         });
     }
     async createCurrency(userId, workspaceId, dto) {
-        const existing = await this.prisma.currency.findUnique({
+        const existing = await this.prisma.currency.findFirst({
             where: {
-                workspaceId_code: {
-                    workspaceId,
-                    code: dto.code.toUpperCase(),
-                },
+                workspaceId,
+                code: dto.code.toUpperCase(),
             },
         });
         if (existing) {

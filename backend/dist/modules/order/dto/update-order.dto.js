@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var _a, _b, _c;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateOrderDto = void 0;
 const class_validator_1 = require("class-validator");
@@ -18,17 +19,17 @@ exports.UpdateOrderDto = UpdateOrderDto;
 __decorate([
     (0, class_validator_1.IsEnum)(client_1.OrderStatus),
     (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
+    __metadata("design:type", typeof (_a = typeof client_1.OrderStatus !== "undefined" && client_1.OrderStatus) === "function" ? _a : Object)
 ], UpdateOrderDto.prototype, "status", void 0);
 __decorate([
     (0, class_validator_1.IsEnum)(client_1.PaymentStatus),
     (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
+    __metadata("design:type", typeof (_b = typeof client_1.PaymentStatus !== "undefined" && client_1.PaymentStatus) === "function" ? _b : Object)
 ], UpdateOrderDto.prototype, "paymentStatus", void 0);
 __decorate([
     (0, class_validator_1.IsEnum)(client_1.FulfillmentStatus),
     (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
+    __metadata("design:type", typeof (_c = typeof client_1.FulfillmentStatus !== "undefined" && client_1.FulfillmentStatus) === "function" ? _c : Object)
 ], UpdateOrderDto.prototype, "fulfillmentStatus", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),

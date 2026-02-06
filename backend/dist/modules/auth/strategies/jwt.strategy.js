@@ -43,7 +43,12 @@ let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(pas
         if (!user) {
             throw new common_1.UnauthorizedException('User not found');
         }
-        return user;
+        const workspaceId = user.workspaces[0]?.workspaceId || null;
+        return {
+            ...user,
+            userId: user.id,
+            workspaceId,
+        };
     }
 };
 exports.JwtStrategy = JwtStrategy;
