@@ -42,9 +42,9 @@ export function DiscountEditor({
   const hasDiscount = discountType && discountValue > 0;
 
   return (
-    <div className="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+    <div className="space-y-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
       <div className="flex items-center justify-between">
-        <label className="font-medium text-gray-700">
+        <label className="font-medium text-gray-700 text-sm">
           {t('products.discount') || 'Discount'}
         </label>
         <label className="flex items-center gap-2 cursor-pointer">
@@ -61,30 +61,19 @@ export function DiscountEditor({
       </div>
 
       {discountType && (
-        <div className="grid grid-cols-2 gap-4">
-          {/* Discount Type */}
-          <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">
-              {t('products.discountType') || 'Discount Type'}
-            </label>
+        <>
+          {/* Inline Type + Value */}
+          <div className="flex gap-2">
             <select
               value={discountType}
               onChange={(e) => onDiscountTypeChange(e.target.value as DiscountType)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="w-32 px-2 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm"
             >
-              <option value="PERCENTAGE">{t('products.percentage') || 'Percentage (%)'}</option>
-              <option value="FIXED">{t('products.fixedAmount') || 'Fixed Amount'}</option>
+              <option value="PERCENTAGE">{t('products.percentage') || '%'}</option>
+              <option value="FIXED">{t('products.fixedAmount') || currency}</option>
             </select>
-          </div>
 
-          {/* Discount Value */}
-          <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">
-              {discountType === 'PERCENTAGE' 
-                ? (t('products.percentageValue') || 'Percentage')
-                : (t('products.amountOff') || 'Amount Off')}
-            </label>
-            <div className="relative">
+            <div className="relative flex-1">
               <input
                 type="number"
                 min="0"
@@ -94,48 +83,35 @@ export function DiscountEditor({
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 placeholder={discountType === 'PERCENTAGE' ? '20' : '50'}
               />
-              <span className="absolute end-3 top-1/2 -translate-y-1/2 text-gray-400">
+              <span className="absolute end-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
                 {discountType === 'PERCENTAGE' ? '%' : currency}
               </span>
             </div>
           </div>
-        </div>
+
+          {/* Compact Price Preview */}
+          {hasDiscount && (
+            <div className="pt-2 border-t border-gray-200 space-y-1">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-600">{t('products.originalPrice') || 'Original'}:</span>
+                <span className="text-gray-900">{formatPrice(price)} {currency}</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-green-600 font-medium">{t('products.discountAmount') || 'Discount'}:</span>
+                <span className="text-green-600 font-medium">
+                  {discountType === 'PERCENTAGE' 
+                    ? `-${discountValue}%`
+                    : `-${discountValue} ${currency}`}
+                </span>
+              </div>
+              <div className="flex items-center justify-between pt-1 border-t border-gray-200">
+                <span className="font-medium text-gray-900 text-sm">{t('products.finalPrice') || 'Final'}:</span>
+                <span className="text-base font-bold text-blue-600">{formatPrice(finalPrice)} {currency}</span>
+              </div>
+            </div>
+          )}
+        </>
       )}
-
-      {/* Price Preview */}
-      <div className="pt-4 border-t border-gray-200">
-        <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-600">
-            {t('products.originalPrice') || 'Original Price'}:
-          </span>
-          <span className="text-gray-900">
-            {formatPrice(price)} {currency}
-          </span>
-        </div>
-
-        {hasDiscount && (
-          <>
-            <div className="flex items-center justify-between mt-2">
-              <span className="text-sm text-green-600 font-medium">
-                {t('products.discountAmount') || 'Discount'}:
-              </span>
-              <span className="text-green-600 font-medium">
-                {discountType === 'PERCENTAGE' 
-                  ? `-${discountValue}%`
-                  : `-${discountValue} ${currency}`}
-              </span>
-            </div>
-            <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-200">
-              <span className="font-medium text-gray-900">
-                {t('products.finalPrice') || 'Final Price'}:
-              </span>
-              <span className="text-lg font-bold text-blue-600">
-                {formatPrice(finalPrice)} {currency}
-              </span>
-            </div>
-          </>
-        )}
-      </div>
     </div>
   );
 }

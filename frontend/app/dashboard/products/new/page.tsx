@@ -117,14 +117,14 @@ export default function NewStandaloneProductPage() {
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column - Main Info (2/3 width) */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-4">
             {/* Product Details */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            <div className="bg-white rounded-lg shadow p-4">
+              <h2 className="text-lg font-semibold text-gray-900 mb-3">
                 {t('products.productDetails')}
               </h2>
 
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     {t('products.productName')} *
@@ -146,7 +146,7 @@ export default function NewStandaloneProductPage() {
                   <textarea
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    rows={3}
+                    rows={2}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                     placeholder={t('stores.description')}
                   />
@@ -155,8 +155,8 @@ export default function NewStandaloneProductPage() {
             </div>
 
             {/* Pricing & Discount */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            <div className="bg-white rounded-lg shadow p-4">
+              <h2 className="text-lg font-semibold text-gray-900 mb-3">
                 {t('products.pricing')}
               </h2>
 
@@ -220,12 +220,12 @@ export default function NewStandaloneProductPage() {
             </div>
 
             {/* Media */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            <div className="bg-white rounded-lg shadow p-4">
+              <h2 className="text-lg font-semibold text-gray-900 mb-3">
                 {t('products.media')}
               </h2>
 
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     {t('products.images')}
@@ -254,10 +254,10 @@ export default function NewStandaloneProductPage() {
           </div>
 
           {/* Right Column - Settings (1/3 width) */}
-          <div className="space-y-6">
+          <div className="space-y-4">
             {/* Store Assignment */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            <div className="bg-white rounded-lg shadow p-4">
+              <h2 className="text-lg font-semibold text-gray-900 mb-3">
                 {t('products.storeAssignment') || 'Store Assignment'}
               </h2>
               
@@ -284,12 +284,12 @@ export default function NewStandaloneProductPage() {
             </div>
 
             {/* Inventory */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            <div className="bg-white rounded-lg shadow p-4">
+              <h2 className="text-lg font-semibold text-gray-900 mb-3">
                 {t('products.inventory')}
               </h2>
 
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     {t('products.sku')}
