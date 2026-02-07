@@ -327,8 +327,12 @@ export default function AllProductsPage() {
                   <td className="px-6 py-4 text-end">
                     <div className="flex items-center justify-end gap-2">
                       <button
-                        onClick={() => router.push(`/dashboard/stores/${product.storeId}/products/${product.id}`)}
-                        className="px-3 py-1.5 bg-gray-100 text-gray-700 text-sm rounded hover:bg-gray-200 transition"
+                        onClick={() => router.push(
+                          product.storeId 
+                            ? `/dashboard/stores/${product.storeId}/products/${product.id}`
+                            : `/dashboard/products/${product.id}`
+                        )}
+                        className="px-3 py-1.5 text-cyan-600 hover:bg-cyan-50 rounded transition"
                       >
                         {t('common.edit')}
                       </button>

@@ -2,9 +2,11 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AppModule } from './app.module';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   const configService = app.get(ConfigService);
 
@@ -23,6 +25,11 @@ async function bootstrap() {
     }),
   );
 
+  // Serve static files from uploads directory
+  app.useStaticAssets(join(__dirname, '..', 'uploads'), {
+    prefix: '/uploads/',
+  });
+
   // API prefix
   app.setGlobalPrefix('api');
 
@@ -31,6 +38,7 @@ async function bootstrap() {
 
   console.log(`🚀 StoreAR Backend running on http://localhost:${port}`);
   console.log(`📚 API: http://localhost:${port}/api`);
+  console.log(`📁 Uploads: http://localhost:${port}/uploads`);
 }
 
 bootstrap();

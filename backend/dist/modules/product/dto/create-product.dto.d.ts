@@ -1,6 +1,6 @@
 import { DiscountType } from '@prisma/client';
 export declare class CreateProductDto {
-    storeId: string;
+    storeId?: string;
     name: string;
     description?: string;
     price: number;

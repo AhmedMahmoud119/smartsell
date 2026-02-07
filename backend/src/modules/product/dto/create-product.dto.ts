@@ -3,8 +3,8 @@ import { DiscountType } from '@prisma/client';
 
 export class CreateProductDto {
   @IsString()
-  @IsNotEmpty()
-  storeId: string;
+  @IsOptional()
+  storeId?: string;
 
   @IsString()
   @IsNotEmpty()

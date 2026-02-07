@@ -101,7 +101,9 @@ export function ImageUpload({ images, onImagesChange, maxImages = 10 }: ImageUpl
 
   const getImageUrl = (url: string) => {
     if (url.startsWith('http')) return url;
-    return `${process.env.NEXT_PUBLIC_API_URL}${url}`;
+    // Remove /api from the URL since uploads are served at root level
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || 'http://localhost:3001';
+    return `${baseUrl}${url}`;
   };
 
   return (

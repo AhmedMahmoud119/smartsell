@@ -98,9 +98,7 @@ export class ProductService {
     status?: string,
   ) {
     const where: any = {
-      store: {
-        workspaceId,
-      },
+      workspaceId, // Filter by workspace directly, not through store
     };
 
     if (storeId) {
@@ -130,9 +128,7 @@ export class ProductService {
     const product = await this.prisma.product.findFirst({
       where: {
         id: productId,
-        store: {
-          workspaceId,
-        },
+        workspaceId, // Filter by workspace directly, not through store
       },
       include: {
         store: {

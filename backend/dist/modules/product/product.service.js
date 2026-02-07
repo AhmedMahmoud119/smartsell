@@ -82,9 +82,7 @@ let ProductService = class ProductService {
     }
     async findAll(userId, workspaceId, storeId, status) {
         const where = {
-            store: {
-                workspaceId,
-            },
+            workspaceId,
         };
         if (storeId) {
             where.storeId = storeId;
@@ -110,9 +108,7 @@ let ProductService = class ProductService {
         const product = await this.prisma.product.findFirst({
             where: {
                 id: productId,
-                store: {
-                    workspaceId,
-                },
+                workspaceId,
             },
             include: {
                 store: {
